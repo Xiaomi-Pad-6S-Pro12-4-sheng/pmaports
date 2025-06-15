@@ -1,0 +1,119 @@
+# Maintainer: alghiffaryfa19 <alghiffaryfa19@gmail.com>
+pkgname=firmware-xiaomi-sheng
+pkgver=20240917
+pkgrel=1
+pkgdesc="Firmware for Xiaomi Mi Pad 6s Pro"
+subpackages="
+	$pkgname-adreno
+	$pkgname-adsp
+	$pkgname-cdsp
+	$pkgname-other
+	$pkgname-initramfs
+	$pkgname-touchscreen
+	$pkgname-nanosic
+	$pkgname-ath12k
+	$pkgname-qca
+	$pkgname-qcom
+	"
+url="https://github.com/map220v/sheng-firmware"
+arch="aarch64"
+license="proprietary"
+options="!check !strip !archcheck !tracedeps pmb:cross-native"
+source="
+	https://github.com/map220v/sheng-firmware.git
+	30-dsp-firmware.files
+"
+builddir="$srcdir/xiaomi-sheng-firmware-$_commit"
+
+package() {
+	# parent package is empty
+	mkdir -p "$pkgdir"
+}
+
+# Xiaomi elish boots with secure boot, it can only load signed firmwares.
+ath12k() {
+	pkgdesc="Xiaomi sheng ath12k firmware"
+	depends="linux-firmware-ath12k"
+
+	install -Dm644 "$builddir"/ath12k/* -t \
+		"$subpkgdir/lib/firmware/ath12k/"
+}
+
+qca() {
+	pkgdesc="Xiaomi sheng qca firmware"
+	depends="linux-firmware-qca"
+
+	install -Dm644 "$builddir"/qca/* -t \
+		"$subpkgdir/lib/firmware/qca/"
+}
+
+qcom() {
+	pkgdesc="Xiaomi sheng qcom firmware"
+	depends="linux-firmware-qcom"
+
+	install -Dm644 "$builddir"/qcom/* -t \
+		"$subpkgdir/lib/firmware/qcom/"
+}
+
+adreno() {
+	pkgdesc="Xiaomi sheng adreno firmware"
+	depends="firmware-qcom-adreno-a740"
+
+	install -Dm644 "$builddir"/qcom/sm8550/sheng/a740_zap.mbn -t \
+		"$subpkgdir/lib/firmware/qcom/sm8550/sheng/"
+}
+
+adsp() {
+	pkgdesc="Xiaomi sheng adsp firmware"
+
+	install -Dm644 "$builddir"/qcom/sm8550/sheng/adsp* -t \
+		"$subpkgdir/lib/firmware/qcom/sm8550/sheng/"
+}
+
+cdsp() {
+	pkgdesc="Xiaomi sheng cdsp firmware"
+
+	install -Dm644 "$builddir"/qcom/sm8550/sheng/cdsp* -t \
+		"$subpkgdir/lib/firmware/qcom/sm8550/sheng/"
+}
+
+other() {
+	pkgdesc="Xiaomi sheng other firmware"
+
+	install -Dm644 "$builddir"/qcom/sm8550/sheng/battmgr.jsn -t \
+		"$subpkgdir/lib/firmware/qcom/sm8550/sheng/"
+	
+	install -Dm644 "$builddir"/qcom/sm8550/sheng/ipa_fws.mbn -t \
+		"$subpkgdir/lib/firmware/qcom/sm8550/sheng/"
+
+	install -Dm644 "$builddir"/qcom/sm8550/sheng/vpu30_4v.mbn -t \
+		"$subpkgdir/lib/firmware/qcom/sm8550/sheng/"
+}
+
+initramfs() {
+	pkgdesc="Xiaomi sheng firmware to be included in the initramfs"
+
+	install -Dm644 "$srcdir/30-dsp-firmware.files" \
+		"$subpkgdir/usr/share/mkinitfs/files/30-dsp-firmware.files"
+}
+
+
+
+touchscreen() {
+	pkgdesc="Xiaomi sheng touchscreen firmware"
+
+	install -Dm644 "$builddir"/novatek/* -t \
+		"$subpkgdir/lib/firmware/novatek/"
+}
+
+nanosic() {
+	pkgdesc="Xiaomi sheng nanosic firmware"
+
+	install -Dm644 "$builddir"/nanosic/* -t \
+		"$subpkgdir/lib/firmware/nanosic/"
+}
+
+sha512sums="
+  SKIP
+  SKIP
+"
