@@ -13,7 +13,6 @@ options="
 	!strip
 	"
 depends="
-	alsa-ucm-conf
 	firmware-xiaomi-sheng
 	linux-postmarketos-qcom-sm8550
 	make-dynpart-mappings
