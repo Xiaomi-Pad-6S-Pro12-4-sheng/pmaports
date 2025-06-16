@@ -42,8 +42,8 @@ build() {
 package() {
 	devicepkg_package $startdir $pkgname
 
-	cp -r "$srcdir"/alsa-ucm-conf/ucm "$pkgdir/usr/share/alsa/"
-	cp -r "$srcdir"/alsa-ucm-conf/ucm2 "$pkgdir/usr/share/alsa/"
+	cp -r "$srcdir"/alsa-ucm-conf/ucm/* "$pkgdir/usr/share/alsa/ucm/"
+	cp -r "$srcdir"/alsa-ucm-conf/ucm2/* "$pkgdir/usr/share/alsa/ucm2/"
 
 	install -Dm64 "$srcdir"/30-gpu-firmware.files -t \
 		"$pkgdir"/usr/share/mkinitfs/files
