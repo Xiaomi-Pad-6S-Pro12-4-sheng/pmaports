@@ -11,13 +11,12 @@ source="
 	sheng-firmware.tar.gz::https://github.com/alghiffaryfa19/sheng-firmware/archive/refs/heads/master.tar.gz
 	30-dsp-firmware.files
 "
-builddir="$srcdir/xiaomi-sheng-firmware-$_commit"
+builddir="$srcdir/sheng-firmware"
 
 package() {
 	# parent package is empty
-	mkdir -p "$pkgdir"
-	install -Dm644 "$builddir"/* -t \
-		"$subpkgdir/lib/firmware/"
+	mkdir -p "$pkgdir/lib/firmware"
+	cp -r "$builddir"/* "$pkgdir/lib/firmware/"
 }
 
 sha512sums="
