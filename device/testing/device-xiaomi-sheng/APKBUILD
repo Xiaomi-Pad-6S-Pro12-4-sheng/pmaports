@@ -41,15 +41,13 @@ build() {
 package() {
 	devicepkg_package $startdir $pkgname
 
-		# Install to /usr/share/deviceinfo
-	install -Dm644 "$srcdir/deviceinfo" \
-		"$pkgdir/usr/share/deviceinfo/deviceinfo"
+	install -Dm644 "$srcdir"/deviceinfo \
+		"$pkgdir"/usr/share/deviceinfo/deviceinfo
 
-	# Also copy to /etc/deviceinfo
-	install -Dm644 "$srcdir/deviceinfo" \
-		"$pkgdir/etc/deviceinfo"
+	install -Dm644 "$srcdir"/deviceinfo \
+		"$pkgdir"/etc/deviceinfo
 
-	install -Dm64 "$srcdir"/30-gpu-firmware.files -t \
+	install -Dm644 "$srcdir"/30-gpu-firmware.files \
 		"$pkgdir"/usr/share/mkinitfs/files
 
 	# device-specific alsa ucm conf
