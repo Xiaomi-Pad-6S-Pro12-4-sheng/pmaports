@@ -76,9 +76,4 @@ openrc() {
 	mkdir -p "$subpkgdir"
 }
 
-sha512sums="
-SKIP
-SKIP
-SKIP
-SKIP
-"
+sha512sums="SKIP SKIP SKIP SKIP"
