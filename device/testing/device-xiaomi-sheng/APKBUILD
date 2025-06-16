@@ -26,12 +26,9 @@ depends="
 "
 makedepends="devicepkg-dev"
 source="
-	HiFi.conf
-	Xiaomi-Pad6SPro.conf
 	deviceinfo
 	30-gpu-firmware.files
-	SM8550-HDK.conf
-	XiaomiPad6SPro.conf
+	https://github.com/map220v/alsa-ucm-conf
 "
 
 subpackages="
@@ -45,17 +42,8 @@ build() {
 package() {
 	devicepkg_package $startdir $pkgname
 
-	install	-Dm644 "$srcdir"/HiFi.conf -t \
-		"$pkgdir"/usr/share/alsa/ucm2/Xiaomi/sheng
-
-	install	-Dm644 "$srcdir/Xiaomi-Pad6SPro.conf" -c \
-		"$pkgdir/usr/share/alsa/ucm2/Xiaomi/sheng"
-
-	install	-Dm644 "$srcdir/XiaomiPad6SPro.conf" -c \
-		"$pkgdir/usr/share/alsa/ucm2/conf.d/sm8550/Xiaomi-Pad6SPro.conf"
-
-	install	-Dm644 "$srcdir/SM8550-HDK.conf" -c \
-		"$pkgdir/usr/share/alsa/ucm2/conf.d/sm8550"
+	cp -r "$srcdir"/alsa-ucm-conf/ucm "$pkgdir/usr/share/alsa/"
+	cp -r "$srcdir"/alsa-ucm-conf/ucm2 "$pkgdir/usr/share/alsa/"
 
 	install -Dm64 "$srcdir"/30-gpu-firmware.files -t \
 		"$pkgdir"/usr/share/mkinitfs/files
