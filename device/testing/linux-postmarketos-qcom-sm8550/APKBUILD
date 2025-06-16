@@ -37,7 +37,7 @@ builddir="$srcdir/sm8550-mainline-sheng-6.15-nanosic-led"
 
 prepare() {
 	default_prepare
-	cp config-postmarketos-qcom-sm8550.aarch64 .config
+	cp "$srcdir/config-postmarketos-qcom-sm8550.aarch64" .config
 }
 
 build() {
