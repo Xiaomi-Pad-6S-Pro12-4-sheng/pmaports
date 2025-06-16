@@ -44,10 +44,7 @@ package() {
 	install -Dm644 "$srcdir"/deviceinfo \
 		"$pkgdir"/usr/share/deviceinfo/deviceinfo
 
-	install -Dm644 "$srcdir"/deviceinfo \
-		"$pkgdir"/etc/deviceinfo
-
-	install -Dm644 "$srcdir"/30-gpu-firmware.files \
+	install -Dm64 "$srcdir"/30-gpu-firmware.files -t \
 		"$pkgdir"/usr/share/mkinitfs/files
 
 	# device-specific alsa ucm conf
