@@ -28,6 +28,10 @@ makedepends="devicepkg-dev"
 source="
 	deviceinfo
 	30-gpu-firmware.files
+	HiFi.conf
+	Xiaomi-Pad6SPro.conf
+	XiaomiPad6SPro.conf
+	SM8550-HDK.conf
 "
 
 subpackages="
