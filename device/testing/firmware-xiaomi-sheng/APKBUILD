@@ -11,7 +11,7 @@ source="
 	https://github.com/alghiffaryfa19/sheng-firmware/archive/refs/heads/master.tar.gz
 	30-dsp-firmware.files
 "
-builddir="$srcdir/sheng-firmware"
+builddir="$srcdir/sheng-firmware-master"
 
 package() {
 	# parent package is empty
