@@ -30,7 +30,7 @@ makedepends="
 # Source
 _tag="sm8550-$pkgver"
 source="
-	linux-sheng.tar.gz::https://github.com/alghiffaryfa19/sm8550-mainline/archive/refs/heads/sheng-6.15-nanosic-led.tar.gz
+	sheng-6.15-nanosic-led.tar.gz::https://github.com/alghiffaryfa19/sm8550-mainline/archive/refs/heads/sheng-6.15-nanosic-led.tar.gz
 "
 builddir="$srcdir/sm8550-mainline-$_tag"
 
@@ -61,5 +61,5 @@ package() {
 }
 
 sha512sums="
-cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e linux-sheng.tar.gz
+44e68638f64ed66d1249ff3a5db1d5f782b48ce9043e52868864254c647ff2cfa7e3b0128fd5583a12576995061d19ca41262558eac935ae1a92585a8f76e93c  sheng-6.15-nanosic-led.tar.gz
 "
