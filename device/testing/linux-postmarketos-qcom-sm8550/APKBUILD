@@ -31,12 +31,13 @@ makedepends="
 _tag="sm8550-$pkgver"
 source="
 	sheng-6.15-nanosic-led.tar.gz::https://github.com/alghiffaryfa19/sm8550-mainline/archive/refs/heads/sheng-6.15-nanosic-led.tar.gz
+	config-postmarketos-qcom-sm8550.aarch64
 "
 builddir="$srcdir/sm8550-mainline-$_tag"
 
 prepare() {
 	default_prepare
-	make defconfig sm8550.config
+	cp config-postmarketos-qcom-sm8550.aarch64 .config
 }
 
 build() {
@@ -62,4 +63,5 @@ package() {
 
 sha512sums="
 44e68638f64ed66d1249ff3a5db1d5f782b48ce9043e52868864254c647ff2cfa7e3b0128fd5583a12576995061d19ca41262558eac935ae1a92585a8f76e93c  sheng-6.15-nanosic-led.tar.gz
+f50539e84ab4c494f486b20b91c45989181c649fa4738c1db35a3e134072b23ab4f95747b2ba88a55e9b69ce2f53ed924044be09c8355ae553fe13979bb18196  config-postmarketos-qcom-sm8550.aarch64
 "
