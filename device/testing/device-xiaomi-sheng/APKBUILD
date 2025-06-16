@@ -25,6 +25,7 @@ source="
 	alsa-ucm-conf/sheng.conf
 	alsa-ucm-conf/HiFi.conf
 	deviceinfo
+	30-gpu-firmware.files
 "
 
 subpackages="
@@ -42,6 +43,9 @@ package() {
 
 	install -Dm644 "$srcdir/deviceinfo" \
 		"$pkgdir/usr/share/deviceinfo/deviceinfo"
+
+	install -Dm64 "$srcdir"/30-gpu-firmware.files -t \
+		"$pkgdir"/usr/share/mkinitfs/files
 
 	# device-specific alsa ucm conf
 	install -Dm644 "$srcdir/sheng.conf" \
