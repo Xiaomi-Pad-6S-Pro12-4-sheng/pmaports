@@ -30,14 +30,12 @@ makedepends="
 # Source
 _tag="sm8550-$pkgver"
 source="
-	https://github.com/map220v/sm8550-mainline.git
-	https://github.com/user-attachments/files/20585999/nanosic.patch
+	linux-sheng.tar.gz::https://github.com/alghiffaryfa19/sm8550-mainline/archive/refs/heads/sheng-6.15-nanosic-led.tar.gz
 "
 builddir="$srcdir/sm8550-mainline-$_tag"
 
 prepare() {
 	default_prepare
-	git switch sheng-6.15-nanosic-led
 	make defconfig sm8550.config
 }
 
@@ -63,6 +61,5 @@ package() {
 }
 
 sha512sums="
-SKIP
-SKIP
+cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e  linux-sheng.tar.gz
 "
