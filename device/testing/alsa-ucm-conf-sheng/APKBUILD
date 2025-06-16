@@ -14,7 +14,6 @@ builddir="$srcdir/alsa-ucm-conf-master"
 
 package() {
 	# install audio config files
-	mkdir -p "$pkgdir"/usr/share/alsa
-	cp -r "$srcdir/alsa-ucm-conf-master"/ucm2 \
-		"$pkgdir"/usr/share/alsa/
+	mkdir -p "$pkgdir"/usr/share/alsa/ucm2
+	cp -r "$builddir"/ucm2/* "$pkgdir/usr/share/alsa/ucm2/"
 }
