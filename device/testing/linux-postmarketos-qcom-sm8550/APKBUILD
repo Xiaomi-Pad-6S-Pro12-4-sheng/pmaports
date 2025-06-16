@@ -1,0 +1,68 @@
+# Reference: <https://postmarketos.org/vendorkernel>
+# Kernel config based on: arch/arm64/configs/defconfig
+# Maintainer: alghiffaryfa19 <alghiffaryfa19@gmail.com>
+
+_flavor="postmarketos-qcom-sm8550"
+pkgname=linux-$_flavor
+pkgver=6.15.0
+pkgrel=1
+pkgdesc="Mainline kernel fork for SM8550"
+arch="aarch64"
+_carch="arm64"
+url="https://github.com/alghiffaryfa19/sm8550-mainline"
+license="GPL-2.0-only"
+options="!strip !check !tracedeps
+	pmb:cross-native
+	pmb:kconfigcheck-nftables
+	pmb:kconfigcheck-community
+"
+makedepends="
+	bash
+	bison
+	findutils
+	flex
+	openssl-dev
+	perl
+	postmarketos-installkernel
+	python3
+"
+
+# Source
+_tag="sm8550-$pkgver"
+source="
+	https://github.com/map220v/sm8550-mainline.git
+	https://github.com/user-attachments/files/20585999/nanosic.patch
+"
+builddir="$srcdir/sm8550-mainline-$_tag"
+
+prepare() {
+	default_prepare
+	git switch sheng-6.15-nanosic-led
+	make defconfig sm8550.config
+}
+
+build() {
+	unset LDFLAGS
+	make ARCH="$_carch" CC="${CC:-gcc}" \
+		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-$_flavor"
+}
+
+package() {
+	mkdir -p "$pkgdir"/boot
+
+	make zinstall modules_install dtbs_install \
+		ARCH="$_carch" \
+		INSTALL_PATH="$pkgdir"/boot/ \
+		INSTALL_MOD_PATH="$pkgdir" \
+		INSTALL_MOD_STRIP=1 \
+		INSTALL_DTBS_PATH="$pkgdir/boot/dtbs"
+	rm -f "$pkgdir"/lib/modules/*/build "$pkgdir"/lib/modules/*/source
+
+	install -D "$builddir"/include/config/kernel.release \
+		"$pkgdir"/usr/share/kernel/$_flavor/kernel.release
+}
+
+sha512sums="
+SKIP
+SKIP
+"
