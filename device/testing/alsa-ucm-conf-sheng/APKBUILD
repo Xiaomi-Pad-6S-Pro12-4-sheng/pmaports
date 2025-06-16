@@ -8,7 +8,7 @@ arch="aarch64"
 license="BSD-3-Clause"
 provides="alsa-ucm-conf"
 provider_priority=1
-source="master.tar.gz::https://github.com/map220v/alsa-ucm-conf/archive/refs/heads/master.tar.gz"
+source="https://github.com/map220v/alsa-ucm-conf/archive/refs/heads/master.tar.gz"
 options="!check"
 builddir="$srcdir/alsa-ucm-conf-master"
 
