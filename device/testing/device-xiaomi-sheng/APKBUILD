@@ -28,7 +28,7 @@ makedepends="devicepkg-dev"
 source="
 	deviceinfo
 	30-gpu-firmware.files
-	https://github.com/map220v/alsa-ucm-conf
+	alsa-ucm-conf.tar.gz::https://github.com/map220v/alsa-ucm-conf/archive/refs/heads/master.tar.gz
 "
 
 subpackages="
@@ -42,8 +42,8 @@ build() {
 package() {
 	devicepkg_package $startdir $pkgname
 
-	cp -r "$srcdir"/alsa-ucm-conf/ucm/* "$pkgdir/usr/share/alsa/ucm/"
-	cp -r "$srcdir"/alsa-ucm-conf/ucm2/* "$pkgdir/usr/share/alsa/ucm2/"
+	cp -r "$srcdir"/alsa-ucm-conf-master/ucm/* "$pkgdir/usr/share/alsa/ucm/"
+	cp -r "$srcdir"/alsa-ucm-conf-master/ucm2/* "$pkgdir/usr/share/alsa/ucm2/"
 
 	install -Dm64 "$srcdir"/30-gpu-firmware.files -t \
 		"$pkgdir"/usr/share/mkinitfs/files
