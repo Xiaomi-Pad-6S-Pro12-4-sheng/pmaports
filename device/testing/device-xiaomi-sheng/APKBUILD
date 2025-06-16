@@ -31,7 +31,6 @@ source="
 	HiFi.conf
 	Xiaomi-Pad6SPro.conf
 	XiaomiPad6SPro.conf
-	SM8550-HDK.conf
 "
 
 subpackages="
@@ -53,9 +52,6 @@ package() {
 
 	install	-Dm644 "$srcdir/XiaomiPad6SPro.conf" \
 		"$pkgdir/usr/share/alsa/ucm2/conf.d/sm8550/Xiaomi-Pad6SPro.conf"
-
-	install	-Dm644 "$srcdir/SM8550-HDK.conf" -t \
-		"$pkgdir"/usr/share/alsa/ucm2/conf.d/sm8550
 
 	install -Dm64 "$srcdir"/30-gpu-firmware.files -t \
 		"$pkgdir"/usr/share/mkinitfs/files
