@@ -33,7 +33,7 @@ source="
 	sheng-6.15-nanosic-led.tar.gz::https://github.com/alghiffaryfa19/sm8550-mainline/archive/refs/heads/sheng-6.15-nanosic-led.tar.gz
 	config-postmarketos-qcom-sm8550.aarch64
 "
-builddir="$srcdir/sm8550-mainline-$_tag"
+builddir="$srcdir/sm8550-mainline-sheng-6.15-nanosic-led"
 
 prepare() {
 	default_prepare
