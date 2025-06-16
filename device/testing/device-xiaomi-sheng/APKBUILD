@@ -42,16 +42,16 @@ package() {
 	devicepkg_package $startdir $pkgname
 
 	install	-Dm644 "$srcdir"/HiFi.conf -t \
-		"$pkgdir/usr/share/alsa/ucm2/Xiaomi/sheng/HiFi.conf"
+		"$pkgdir"/usr/share/alsa/ucm2/Xiaomi/sheng
 
-	install	-Dm644 "$srcdir/Xiaomi-Pad6SPro.conf" -c \
-		"$pkgdir/usr/share/alsa/ucm2/Xiaomi/sheng/Xiaomi-Pad6SPro.conf"
+	install	-Dm644 "$srcdir/Xiaomi-Pad6SPro.conf" -t \
+		"$pkgdir"/usr/share/alsa/ucm2/Xiaomi/sheng
 
-	install	-Dm644 "$srcdir/XiaomiPad6SPro.conf" -c \
+	install	-Dm644 "$srcdir/XiaomiPad6SPro.conf" \
 		"$pkgdir/usr/share/alsa/ucm2/conf.d/sm8550/Xiaomi-Pad6SPro.conf"
 
-	install	-Dm644 "$srcdir/SM8550-HDK.conf" -c \
-		"$pkgdir/usr/share/alsa/ucm2/conf.d/sm8550/SM8550-HDK.conf"
+	install	-Dm644 "$srcdir/SM8550-HDK.conf" -t \
+		"$pkgdir"/usr/share/alsa/ucm2/conf.d/sm8550
 
 	install -Dm64 "$srcdir"/30-gpu-firmware.files -t \
 		"$pkgdir"/usr/share/mkinitfs/files
