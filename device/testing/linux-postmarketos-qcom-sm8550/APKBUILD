@@ -1,6 +1,6 @@
 # Reference: <https://postmarketos.org/vendorkernel>
 # Kernel config based on: arch/arm64/configs/defconfig
-# Maintainer: Jianhua Lu <lujianhua000@gmail.com>
+# Maintainer: alghiffaryfa19 <alghiffaryfa19@gmail.com>
 
 _flavor="postmarketos-qcom-sm8550"
 pkgname=linux-$_flavor
@@ -9,7 +9,7 @@ pkgrel=1
 pkgdesc="Mainline kernel fork for SM8550"
 arch="aarch64"
 _carch="arm64"
-url="https://github.com/map220v/sm8550-mainline"
+url="https://github.com/alghiffaryfa19/sm8550-mainline"
 license="GPL-2.0-only"
 options="!strip !check !tracedeps
 	pmb:cross-native
@@ -37,7 +37,7 @@ builddir="$srcdir/sm8550-mainline-$_tag"
 
 prepare() {
 	default_prepare
-	git apply nanosic.patch
+	git switch sheng-6.15-nanosic-led
 	make defconfig sm8550.config
 }
 

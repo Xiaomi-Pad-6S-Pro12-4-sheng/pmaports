@@ -64,16 +64,7 @@ kernel() {
 nonfree_firmware() {
 	pkgdesc="Firmware"
 	depends="
-		firmware-xiaomi-sheng-adreno
-		firmware-xiaomi-sheng-adsp
-		firmware-xiaomi-sheng-cdsp
-		firmware-xiaomi-sheng-other
-		firmware-xiaomi-sheng-initramfs
-		firmware-xiaomi-sheng-nanosic
-		firmware-xiaomi-sheng-touchscreen
-		firmware-xiaomi-sheng-ath12k
-		firmware-xiaomi-sheng-qca
-		firmware-xiaomi-sheng-qcom
+		firmware-xiaomi-sheng
 		"
 	mkdir "$subpkgdir"
 }
