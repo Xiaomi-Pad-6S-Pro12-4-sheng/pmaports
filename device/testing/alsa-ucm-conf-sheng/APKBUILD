@@ -10,13 +10,13 @@ provides="alsa-ucm-conf"
 provider_priority=1
 _commit="master"
 options="!check"
-source="$pkgname-$_commit::git+https://github.com/map220v/alsa-ucm-conf"
-builddir="$srcdir/$pkgname-$_commit"
-
+source="
+alsa-ucm-conf-sm8550.zip
+"
 
 package() {
 	# install audio config files
 	mkdir -p "$pkgdir"/usr/share/alsa
-	cp -r "$srcdir/alsa-ucm-conf-$_commit"/ucm2 \
+	cp -r "$srcdir"/alsa-ucm-conf-sm8550/ucm2 \
 		"$pkgdir"/usr/share/alsa/
 }
