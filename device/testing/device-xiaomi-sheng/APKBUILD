@@ -13,7 +13,7 @@ options="
 	!strip
 	"
 depends="
-	alsa-ucm-conf-sheng
+	alsa-ucm-conf
 	firmware-xiaomi-sheng
 	linux-postmarketos-qcom-sm8550
 	make-dynpart-mappings
@@ -43,6 +43,16 @@ build() {
 
 package() {
 	devicepkg_package $startdir $pkgname
+
+	install -Dm644 "$srcdir/HiFi.conf" \
+		"$pkgdir/usr/share/alsa/ucm2/Xiaomi/sheng/HiFi.conf"
+
+	install -Dm644 "$srcdir/Xiaomi-Pad6SPro.conf" \
+		"$pkgdir/usr/share/alsa/ucm2/Xiaomi/sheng/Xiaomi-Pad6SPro.conf"
+
+	mkdir -p "$pkgdir/usr/share/alsa/ucm2/conf.d/sm8550"
+	ln -s ../../Xiaomi/sheng/Xiaomi-Pad6SPro.conf \
+		"$pkgdir/usr/share/alsa/ucm2/conf.d/sm8550/Xiaomi-Pad6SPro.conf"
 
 	install -Dm64 "$srcdir"/30-gpu-firmware.files -t \
 		"$pkgdir"/usr/share/mkinitfs/files
