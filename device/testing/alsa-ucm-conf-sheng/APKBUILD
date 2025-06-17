@@ -9,13 +9,14 @@ license="BSD-3-Clause"
 provides="alsa-ucm-conf"
 provider_priority=1
 _commit="master"
-source="https://github.com/map220v/alsa-ucm-conf.git"
 options="!check"
+source="$pkgname-$_commit::git+https://github.com/map220v/alsa-ucm-conf"
 builddir="$srcdir/$pkgname-$_commit"
+
 
 package() {
 	# install audio config files
 	mkdir -p "$pkgdir"/usr/share/alsa
-	cp -r "$srcdir/alsa-ucm-conf"/ucm2 \
+	cp -r "$srcdir/alsa-ucm-conf-$_commit"/ucm2 \
 		"$pkgdir"/usr/share/alsa/
 }
