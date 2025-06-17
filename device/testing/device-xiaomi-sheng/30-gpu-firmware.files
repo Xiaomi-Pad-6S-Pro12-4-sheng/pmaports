@@ -1,3 +1,14 @@
 /lib/firmware/qcom/a740_sqe.fw
 /lib/firmware/qcom/gmu_gen70200.bin
 /lib/firmware/qcom/sm8550/sheng/a740_zap.mbn
+/lib/firmware/qcom/sm8550/sheng/adsp.mbn
+/lib/firmware/qcom/sm8550/sheng/adsp_dtb.mbn
+/lib/firmware/qcom/sm8550/sheng/adspr.jsn
+/lib/firmware/qcom/sm8550/sheng/adsps.jsn
+/lib/firmware/qcom/sm8550/sheng/adspua.jsn
+/lib/firmware/qcom/sm8550/sheng/battmgr.jsn
+/lib/firmware/qcom/sm8550/sheng/cdsp.mbn
+/lib/firmware/qcom/sm8550/sheng/cdsp_dtb.mbn
+/lib/firmware/qcom/sm8550/sheng/cdspr.jsn
+/lib/firmware/qcom/sm8550/sheng/ipa_fws.mbn
+/lib/firmware/qcom/sm8550/sheng/vpu30_4v.mbn
