@@ -8,12 +8,14 @@ arch="aarch64"
 license="BSD-3-Clause"
 provides="alsa-ucm-conf"
 provider_priority=1
-source="master.tar.gz::https://github.com/map220v/alsa-ucm-conf/archive/refs/heads/master.tar.gz"
+_commit="master"
+source="$pkgname-$_commit.tar.gz::https://github.com/map220v/alsa-ucm-conf/archive/refs/heads/master.tar.gz"
 options="!check"
-builddir="$srcdir/alsa-ucm-conf-master"
+builddir="$srcdir/$pkgname-$_commit"
 
 package() {
 	# install audio config files
-	mkdir -p "$pkgdir"/usr/share/alsa/ucm2
-	cp -r --no-preserve=ownership "$builddir"/ucm2/. "$pkgdir/usr/share/alsa/ucm2/"
+	mkdir -p "$pkgdir"/usr/share/alsa
+	cp -r "$srcdir/alsa-ucm-conf-$_commit"/ucm2 \
+		"$pkgdir"/usr/share/alsa/
 }
