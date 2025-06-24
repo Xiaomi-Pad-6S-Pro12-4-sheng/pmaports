@@ -63,8 +63,6 @@ generate-build-jobs:
   artifacts:
     paths:
       - .ci/build-jobs.yaml
-  rules:
-    - if: *mr_rule
 
 build-jobs:
   stage: build
@@ -76,8 +74,6 @@ build-jobs:
     forward:
       # So that we don't have to duplicate GIT_DEPTH
       pipeline_variables: true
-  rules:
-    - if: *mr_rule
 
 auto-update:
   stage: autoupdate
@@ -101,7 +97,5 @@ auto-update:
 # Template for package test jobs defined per-package 
 .package-test:
   stage: test
-  rules:
-    - if: *mr_rule
   before_script:
     - .ci/lib/gitlab_prepare_ci.sh
