@@ -1,2 +1,2 @@
 #!/bin/sh
-rc-update add qbootctl default
+rc-update add qbootctl

@@ -195,7 +195,7 @@ auto-update:
       - log_testsuite_pmaports.txt
       - pmbootstrap.cfg
 
-# Template for package test jobs defined per-package
+# Template for package test jobs defined per-package 
 .package-test:
   stage: test
   rules:

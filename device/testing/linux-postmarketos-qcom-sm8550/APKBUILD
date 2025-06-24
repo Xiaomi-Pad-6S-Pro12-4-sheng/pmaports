@@ -30,15 +30,14 @@ makedepends="
 # Source
 _tag="sm8550-$pkgver"
 source="
-	https://github.com/map220v/sm8550-mainline.git
-	https://github.com/user-attachments/files/20585999/nanosic.patch
+	sheng-6.15-nanosic-led.tar.gz::https://github.com/alghiffaryfa19/sm8550-mainline/archive/refs/heads/sheng-6.15-nanosic-led.tar.gz
+	config-postmarketos-qcom-sm8550.aarch64
 "
-builddir="$srcdir/sm8550-mainline-$_tag"
+builddir="$srcdir/sm8550-mainline-sheng-6.15-nanosic-led"
 
 prepare() {
 	default_prepare
-	git switch sheng-6.15-nanosic-led
-	make defconfig sm8550.config
+	cp "$srcdir/config-postmarketos-qcom-sm8550.aarch64" .config
 }
 
 build() {
@@ -61,8 +60,3 @@ package() {
 	install -D "$builddir"/include/config/kernel.release \
 		"$pkgdir"/usr/share/kernel/$_flavor/kernel.release
 }
-
-sha512sums="
-SKIP
-SKIP
-"
