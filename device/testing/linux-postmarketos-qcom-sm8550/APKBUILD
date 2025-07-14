@@ -9,7 +9,7 @@ pkgrel=1
 pkgdesc="Mainline kernel fork for SM8550"
 arch="aarch64"
 _carch="arm64"
-url="https://github.com/alghiffaryfa19/sm8550-mainline"
+url="https://github.com/map220v/sm8550-mainline"
 license="GPL-2.0-only"
 options="!strip !check !tracedeps
 	pmb:cross-native
@@ -30,10 +30,10 @@ makedepends="
 # Source
 _tag="sm8550-$pkgver"
 source="
-	sheng-6.15-nanosic-led.tar.gz::https://github.com/alghiffaryfa19/sm8550-mainline/archive/refs/heads/sheng-6.15-nanosic-led.tar.gz
+	sheng-6.15.tar.gz::https://github.com/alghiffaryfa19/sm8550-mainline/archive/refs/heads/sheng-6.15.tar.gz
 	config-postmarketos-qcom-sm8550.aarch64
 "
-builddir="$srcdir/sm8550-mainline-sheng-6.15-nanosic-led"
+builddir="$srcdir/sm8550-mainline-sheng-6.15"
 
 prepare() {
 	default_prepare
