@@ -1,8 +1,6 @@
-# Forked from Alpine to add systemd!
-
+maintainer="Bart Ribbers <bribbers@disroot.org>"
 pkgname=drkonqi
-pkgver=99996.3.5
-_pkgver=6.3.5
+pkgver=6.4.2
 pkgrel=0
 pkgdesc="The KDE crash handler"
 # armhf blocked by qt6-qtdeclarative -> ki18n
@@ -48,9 +46,7 @@ case "$pkgver" in
 esac
 subpackages="$pkgname-lang"
 _repo_url="https://invent.kde.org/plasma/drkonqi.git"
-source="https://download.kde.org/stable/plasma/$_pkgver/drkonqi-$_pkgver.tar.xz"
-
-builddir="$srcdir/$pkgname-$_pkgver"
+source="https://download.kde.org/stable/plasma/$pkgver/drkonqi-$pkgver.tar.xz"
 
 build() {
 	cmake -B build -G Ninja \
@@ -72,5 +68,5 @@ package() {
 }
 
 sha512sums="
-b77e3d2cbb854fd3bf1e44a7c267c1012ad69f72d2d343399cd0d8ed2cb2d07f14a9ae3ea6cb2e7426fdf610ce2b5496f1abd6fca1895fb47ce30a2f86be2d63  drkonqi-6.3.5.tar.xz
+99fbc07ca55b1fcb7371f8b518f35300065795c2064047924104c99dbde1c8c419fe8eb5603730c4db8ec486a1bbabe9459f2c029b342b20469ca7dd42d687af  drkonqi-6.4.2.tar.xz
 "
