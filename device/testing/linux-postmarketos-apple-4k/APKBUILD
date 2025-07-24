@@ -1,0 +1,69 @@
+# Reference: <https://postmarketos.org/vendorkernel>
+# Kernel config based on: arch/arm64/configs/defconfig
+# Maintainer: Aster Boese <asterboese@mailbox.org>
+
+_flavor="postmarketos-apple-4k"
+pkgname=linux-$_flavor
+pkgver=6.16.0_rc1
+pkgrel=0
+pkgdesc="Mainline kernel fork for Apple iPhone and iPad devices (4k)"
+arch="aarch64"
+_carch="arm64"
+url="https://kernel.org"
+license="GPL-2.0-only"
+options="!strip !check !tracedeps pmb:cross-native"
+makedepends="
+	bash
+	bc
+	bison
+	devicepkg-dev
+	flex
+	openssl-dev
+	perl
+	linux-headers
+"
+
+# Source
+_repository="HoolockLinux/linux"
+_commit="a178ccc5c81acec9462a1f0be4ed5df1e47b225d"
+_config="config-$_flavor.$arch"
+source="
+	http://github.com/$_repository/archive/$_commit.tar.gz
+	$_config
+"
+builddir="$srcdir/linux-$_commit"
+
+prepare() {
+	default_prepare
+	cp "$srcdir/config-$_flavor.$arch" .config
+}
+
+build() {
+	unset LDFLAGS
+	make ARCH="$_carch" \
+		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-postmarketOS" \
+		Image.gz dtbs
+}
+
+package() {
+	mkdir -p "$pkgdir"/boot
+
+	install -Dm644 "$builddir/arch/$_carch/boot/Image.gz" \
+		"$pkgdir/boot/vmlinuz"
+
+	make dtbs_install \
+		ARCH="$_carch" \
+		INSTALL_PATH="$pkgdir"/boot/ \
+		INSTALL_MOD_PATH="$pkgdir" \
+		INSTALL_MOD_STRIP=1 \
+		INSTALL_DTBS_PATH="$pkgdir/boot/dtbs"
+	rm -f "$pkgdir"/lib/modules/*/build "$pkgdir"/lib/modules/*/source
+
+	install -D "$builddir"/include/config/kernel.release \
+		"$pkgdir"/usr/share/kernel/$_flavor/kernel.release
+}
+
+sha512sums="
+d3ce34a35ab85a30cb9596e0f88895b9139fb5d9c72ad1de3a07321e752c2b3a07b214255da7da1dcc1921c5bb69201d5d55a23ab49993bb08ac4751b88eb305  a178ccc5c81acec9462a1f0be4ed5df1e47b225d.tar.gz
+ee435abbe959c7d89d69f0297255469b6c45f24244910a32eb4c977503210d3d262573369e73997289954ef2dc5231736a514bf5777271822d089156cecdf712  config-postmarketos-apple-4k.aarch64
+"

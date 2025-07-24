@@ -4,7 +4,7 @@ _flavor=postmarketos-qcom-msm8974
 _config="config-$_flavor.$CARCH"
 
 pkgname=linux-$_flavor
-pkgver=6.13.2
+pkgver=6.15.2
 pkgrel=0
 _tag="v${pkgver/_/-}-msm8974"
 pkgdesc="Kernel close to mainline with extra patches for Qualcomm MSM8974 devices"
@@ -61,6 +61,6 @@ package() {
 }
 
 sha512sums="
-3507d79c2fb818e82aa1742965bd593fcbe5a3bc92c8d01b0f614785b93485e7048de46f29bd138dbb6d95850c022221b20eb7cad18dc323e763a5dc517ef00d  linux-v6.13.2-msm8974.tar.gz
-a06d663d893c734e5bda7793ee6e2c48bb8b3223a02bb06702a5ecbd211f4580c1800c43e4a6b6d3532a1e8e6062c21fa846448d9380a6ff6bbc46b0bf792923  config-postmarketos-qcom-msm8974.armv7
+4d96914c8d1bd119178412352bd7fd7016a1f912395d38530a875d0cd21deadec2aeed6c9d7a5502a028221f4fe6ae8188701fd23e96587ce09303b8e3b7f0d7  linux-v6.15.2-msm8974.tar.gz
+9ff08f7765d19976fba29a67ad3a3fe2b35e414a7eff0005b1763edaddf802b053c37b9d21ab01978d548e9053d276772c46e5d99a164fd13b7da81e683296d6  config-postmarketos-qcom-msm8974.armv7
 "
