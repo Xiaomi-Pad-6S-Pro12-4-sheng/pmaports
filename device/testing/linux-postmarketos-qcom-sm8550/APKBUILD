@@ -4,7 +4,7 @@
 
 _flavor="postmarketos-qcom-sm8550"
 pkgname=linux-$_flavor
-pkgver=6.15.0
+pkgver=6.16.0
 pkgrel=1
 pkgdesc="Mainline kernel fork for SM8550"
 arch="aarch64"
