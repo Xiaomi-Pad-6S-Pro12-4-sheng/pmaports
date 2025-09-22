@@ -11,6 +11,7 @@ disable multipathd.service
 ## system services
 enable ModemManager.service
 enable NetworkManager.service
+enable NetworkManager-wait-online.service
 enable apk-polkit-server.service
 enable bluetooth.service
 enable haveged.service
@@ -24,7 +25,8 @@ enable sshd.service
 enable systemd-rfkill.service
 enable tinydm.service
 enable udisks2.service
-enable cups.service
+enable cups.path
+enable cups.socket
 enable zram_swap.service
 enable systemd-oomd.service
 enable alsa-restore.service
@@ -48,8 +50,13 @@ enable urfkill.service
 enable plasma-mobile.service
 enable sddm.service
 
+enable drkonqi-coredump-processor@.service
+
 ## gnome
 enable gdm.service
+
+## optional dependency of gnome-usage
+enable vnstat.service
 
 ## fbkeyboard
 enable fbkeyboard.service
@@ -109,6 +116,9 @@ enable qrtr-ns.service
 enable rmtfs.service
 enable tqftpserv.service
 
+## pixel3a
+enable modem-gnss.service
+
 ## pinephone{,-pro}
 enable eg25-manager.service
 
@@ -119,3 +129,6 @@ enable cros-keyboard-map.service
 ## librem5
 enable l5-brcm-bt-enable.service
 enable librem5-base-defaults.librem5-lockdown-support.service
+
+## nokia n900
+enable wl1251-cal.service

@@ -1,0 +1,48 @@
+
+# Reference: <https://postmarketos.org/devicepkg>
+# Maintainer: Casey Connolly <kcxt@postmarketos.org>
+
+pkgname=device-qcom-rbx
+pkgdesc="Generic device package for Qualcomm development boards"
+pkgver=2
+pkgrel=0
+url="https://postmarketos.org"
+license="MIT"
+arch="aarch64"
+options="!check !archcheck"
+# udisks2 is used by FWUPD to find the ESP for capsule updates
+depends="
+	linux-next
+	systemd-boot
+	postmarketos-base
+	soc-qcom
+	fwupd
+	udisks2
+"
+_pmb_recommends="
+	linux-firmware-qcom
+	linux-firmware-qca
+	linux-firmware-ath10k
+	linux-firmware-ath11k
+	linux-firmware-ath12k
+	rmtfs
+"
+
+makedepends="devicepkg-dev"
+source="
+	deviceinfo
+	modules-initfs
+"
+
+build() {
+	devicepkg_build $startdir $pkgname
+}
+
+package() {
+	devicepkg_package $startdir $pkgname
+}
+
+sha512sums="
+49f09697a42adfbd516d9b312313992074c9991ae3bceb1d76b561ca9db132fe1960369b8872f7ce3804a9b1545b7a9ab9a7c1589d3f42de0675bbfad0c923ae  deviceinfo
+c48cf25a8d95dbd077fa159daa7bee312921b47aa2e1ac628fea92a74520b039736ce6b82509954ba1c4f4b99ed32fd26d1b2602b900308dee87581fa87c7129  modules-initfs
+"

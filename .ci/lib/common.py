@@ -46,6 +46,13 @@ def commit_message_has_string(needle):
     return needle in run_git(["log", "--pretty=format:%B", f"{base_commit}..HEAD"])
 
 
+def all_committed_by_merge_bot():
+    base_commit = get_base_commit()
+    commit_emails = run_git(["log", "--pretty=format:%ce", f"{base_commit}..HEAD"]).splitlines()
+    bot_email = os.getenv("PMOS_MERGE_BOT_EMAIL", "merge-bot@postmarketos.org")
+    return all(bot_email == ce for ce in commit_emails)
+
+
 def run_pmbootstrap(parameters):
     """ Run pmbootstrap with the pmaports dir as --aports """
     cmd = ["pmbootstrap", "--aports", get_pmaports_dir()] + parameters
@@ -131,41 +138,6 @@ def get_changed_files(removed=True):
             ret.add(file)
         print(message)
     return ret
-
-
-def get_changed_packages_sanity_check(count):
-    for mark in ["[ci:ignore-count]", "[ci:skip-build]"]:
-        if commit_message_has_string(mark):
-            print("NOTE: package count sanity check skipped (" + mark + ").")
-            return
-    if count <= 10:
-        return
-
-    branch = get_upstream_branch()
-    print(f"""
-ERROR: Too many packages have changed!
-
-This is a sanity check, so we don't end up building packages that
-have not been modified. CI won't run for more than three hours
-anyway.
-
-Your options:
-a) If you *did not* modify everything listed above, then rebase
-   your branch on the official postmarketOS/pmaports.git {branch}
-   branch. Feel free to ask in the chat for help if you need any.
-b) If you *did* modify all these packages, and you assume that
-   they will build within one hour: skip this sanity check by
-   adding '[ci:ignore-count]' to the commit message of the last
-   commit in the merge request (then force push).
-c) If you *did* modify all these packages, and you are sure that
-   they won't build in time, please add '[ci:skip-build]' to the
-   commit message (then force push). Make sure that all packages
-   build with 'pmbootstrap build --strict'!
-
-Thank you and sorry for the inconvenience.
-    """)
-
-    sys.exit(1)
 
 
 def get_changed_packages():

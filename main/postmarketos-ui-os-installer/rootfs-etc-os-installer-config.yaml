@@ -39,7 +39,7 @@ disk_encryption:
 desktop:
   - name        : 'GNOME'
     description : 'Simple desktop that can be personalized with extensions.'
-    image_path  : '/etc/os-installer/desktops/gnome.jpg'
+    image_path  : '/etc/os-installer/desktops/gnome.png'
     keyword     : 'gnome'
   - name        : 'KDE Plasma'
     description : 'Configurable desktop that is similar to Windows.'
@@ -49,6 +49,10 @@ desktop:
     description : 'Lightweight desktop with focus on modularity.'
     image_path  : '/etc/os-installer/desktops/xfce.png'
     keyword     : 'xfce4'
+  - name        : 'Console'
+    description : 'Console environment for headless devices such as servers.'
+    image_path  : '/etc/os-installer/desktops/console.png'
+    keyword     : 'console'
 
 user:
   request_username: True

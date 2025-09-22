@@ -7,7 +7,7 @@
 # How to add a new service file (5 steps):
 pkgname=systemd-services
 # 1. bump pkgver
-pkgver=79
+pkgver=95
 pkgrel=0
 pkgdesc="Systemd service files"
 url="https://postmarketos.org"
@@ -28,12 +28,15 @@ subpackages="
 	at-spi2-core-systemd:_service
 	avahi-systemd:_service
 	baloo-systemd:_service
+	blueman-systemd:_service
 	bluez-systemd:_service
+	cellbroadcastd-systemd:_service
 	colord-systemd:_service
 	connman-systemd:_service
 	containerd-systemd:_service
 	cosmic-greeter-systemd:_service
 	dconf-systemd:_service
+	dnsmasq-systemd:_service
 	docker-engine-systemd:_service
 	eg25-manager-systemd:_service
 	evolution-data-server-systemd:_service
@@ -49,6 +52,7 @@ subpackages="
 	hexagonrpcd-systemd:_service
 	hfd-service-systemd:_service
 	hkdm-systemd:_service
+	httpd-systemd:_service
 	iio-sensor-proxy-systemd:_service
 	iwd-systemd:_service
 	kactivitymanagerd-systemd:_service
@@ -81,18 +85,24 @@ subpackages="
 	rmtfs-systemd:_service
 	rtkit-systemd:_service
 	sensorfw-systemd:_service
+	siglo-systemd:_service
 	sleep-inhibitor-systemd:_service
+	speakersafetyd-systemd:_service
+	spectacle-systemd:_service
 	syncthing-systemd:_service
 	tailscale-systemd:_service
 	tinydm-systemd:_service
 	tinysparql-systemd:_service
 	tqftpserv-systemd:_service
+	transmission-daemon-systemd:_service
 	tuned-systemd:_service
 	tuned-ppd-systemd:_service
 	udisks2-systemd:_service
 	udiskie-systemd:_service
 	usb-moded-systemd:_service
+	vnstat-systemd:_service
 	vvmd-systemd:_service
+	watchdog-kick-systemd:_service
 	waydroid-sensors-systemd:_service
 	waydroid-systemd:_service
 	wireguard-tools-wg-quick-systemd:_service
@@ -114,6 +124,11 @@ _apk_polkit_rs_sources="system/apk-polkit-server.service"
 _at_spi2_core_sources="user/at-spi-dbus-bus.service"
 _avahi_sources="system/avahi-daemon.service system/avahi-daemon.socket"  # From: https://github.com/avahi/avahi/blob/master/avahi-daemon
 _baloo_sources="user/kde-baloo.service"
+_blueman_sources="
+	system/blueman-mechanism.service
+	user/blueman-applet.service
+	user/blueman-manager.service
+"
 _bluez_sources="
 	system/bluetooth.service
 	system/bluetooth-mesh.service
@@ -121,6 +136,7 @@ _bluez_sources="
 	user/mpris-proxy.service
 	user/obex.service
 " # From bluez build with --enable-systemd
+_cellbroadcastd_sources="user/cellbroadcastd.service" # https://gitlab.freedesktop.org/devrtz/cellbroadcastd/-/blob/main/data/cellbroadcastd.service.in
 _colord_sources="system/colord.service" # From https://github.com/hughsie/colord/blob/main/data/colord.service.in
 _connman_sources="
 	system/connman-vpn.service
@@ -130,6 +146,7 @@ _connman_sources="
 _containerd_sources="system/containerd.service"  # From: https://github.com/containerd/containerd/blob/main/containerd.service
 _cosmic_greeter_sources="system/cosmic-greeter.service system/cosmic-greeter-daemon.service" # From https://github.com/pop-os/cosmic-greeter/tree/master/debian
 _dconf_sources="user/dconf.service"
+_dnsmasq_sources="sysusers.d/dnsmasq.conf"  # From: https://src.fedoraproject.org/rpms/dnsmasq/blob/rawhide/f/dnsmasq-systemd-sysusers.conf
 _docker_engine_sources="system/docker.service system/docker.socket"  # From https://github.com/moby/moby/blob/master/contrib/init/systemd
 _eg25_manager_sources="system/eg25-manager.service" # From https://gitlab.com/mobian1/eg25-manager/-/blob/master/data/eg25-manager.service.in
 _evolution_data_server_sources="
@@ -163,6 +180,7 @@ _greetd_wlgreet_sources="system/wlgreet.service"
 _hexagonrpcd_sources="system/hexagonrpcd-adsp-rootpd.service system/hexagonrpcd-adsp-sensorspd.service system/hexagonrpcd-sdsp.service system/iio-sensor-proxy.service.d/hexagonrpcd.conf"
 _hfd_service_sources="system/hfd-service.service" # From https://gitlab.com/ubports/development/core/hfd-service/-/blob/main/init/hfd-service.service.in
 _hkdm_sources="system/hkdm.service"
+_httpd_sources="system/httpd.service"
 _iio_sensor_proxy_sources="system/iio-sensor-proxy.service"
 _iwd_sources="system/iwd.service" # From https://git.kernel.org/pub/scm/network/wireless/iwd.git/tree/src/iwd.service.in
 _kanshi_sources="user/kanshi.service" # created, no unit file upstream
@@ -183,7 +201,12 @@ _msm_modem_sources="system/msm-modem-uim-selection.service"
 _msm_modem_wwan_port_sources="system/msm-modem-wwan-port.service"
 _nftables_sources="system/nftables.service"
 _nginx_sources="system/nginx.service" # Based on arch's service: https://gitlab.archlinux.org/archlinux/packaging/packages/nginx/-/blob/main/nginx.service
-_openssh_server_pam_sources="system/sshd.service system/sshd@.service system/sshdgenkeys.service"
+_openssh_server_pam_sources="
+	system/sshd.service
+	system/sshd@.service
+	system/sshdgenkeys.service
+	sysusers.d/sshd.conf
+"
 _pd_mapper_sources="system/pd-mapper.service"
 _plasma_mobile_sources="system/plasma-mobile.service"
 _polkit_kde_agent_1_sources="user/plasma-polkit-agent.service" # From https://invent.kde.org/plasma/polkit-kde-agent-1/-/blob/master/plasma-polkit-agent.service.in
@@ -195,18 +218,24 @@ _qcom_diag_sources="system/diag-router.service"
 _rmtfs_sources="system/rmtfs.service"
 _rtkit_sources="system/rtkit-daemon.service"
 _sensorfw_sources="system/sensorfwd.service"
+_siglo_sources="user/siglo.service"  # From https://github.com/theironrobin/siglo/blob/main/data/siglo.service
 _sleep_inhibitor_sources="system/sleep-inhibitor.service"
+_speakersafetyd_sources="system/speakersafetyd.service" # From https://github.com/AsahiLinux/speakersafetyd/blob/main/speakersafetyd.service
+_spectacle_sources="user/app-org.kde.spectacle.service"
 _syncthing_sources="user/syncthing.service"  # From https://github.com/syncthing/syncthing/blob/main/etc/linux-systemd/user/syncthing.service
 _tailscale_sources="system/tailscaled.service etc/default/tailscaled"
-_tinydm_sources="system/tinydm.service"  # see issue tinydm#11
+_tinydm_sources="system/tinydm.service system-generators/tinydm-user-override"  # see issue tinydm#11
 _tinysparql_sources="user/tinysparql-xdg-portal-3.service"  # From https://gitlab.gnome.org/GNOME/tinysparql/-/blob/main/src/portal/tracker-xdg-portal.service.in
 _tqftpserv_sources="system/tqftpserv.service"
+_transmission_daemon_sources="system/transmission-daemon.service"  # Based on https://github.com/transmission/transmission/blob/main/daemon/transmission-daemon.service.in
 _tuned_sources="system/tuned.service"  # From https://github.com/redhat-performance/tuned/blob/master/tuned.service
 _tuned_ppd_sources="system/tuned-ppd.service"  # From https://github.com/redhat-performance/tuned/blob/master/tuned/ppd/tuned-ppd.service
 _udisks2_sources="system/udisks2.service" # From https://github.com/storaged-project/udisks/blob/master/data/udisks2.service.in
 _udiskie_sources="user/udiskie.service"  # created, no unit file upstream
 _usb_moded_sources="system/usb_moded.service" # From usb_moded upstream
 _vvmd_sources="user/vvmd.service"  # From https://salsa.debian.org/DebianOnMobile-team/vvmd/-/blob/debian/latest/debian/vvmd.user.service
+_vnstat_sources="system/vnstat.service"  # From https://github.com/vergoh/vnstat/blob/master/examples/systemd/vnstat.service
+_watchdog_kick_sources="system/watchdog-kick.service"
 _waydroid_sources="system/waydroid-container.service"
 _waydroid_sensors_sources="system/waydroid-sensors.service"
 _wireguard_tools_wg_quick_sources="system/wg-quick@.service" # From https://git.zx2c4.com/wireguard-tools/tree/src/systemd/wg-quick@.service
@@ -218,7 +247,10 @@ _xdg_desktop_portal_sources="
 	user/xdg-permission-store.service
 "
 _xdg_desktop_portal_gtk_sources="user/xdg-desktop-portal-gtk.service"
-_xdg_desktop_portal_phosh_sources="user/xdg-desktop-portal-phosh.service"
+_xdg_desktop_portal_phosh_sources="
+	user/xdg-desktop-portal-phosh.service
+	user/xdg-desktop-portal-phrosh.service
+	" # https://gitlab.gnome.org/guidog/xdg-desktop-portal-phosh/-/tree/main/data
 _xdg_desktop_portal_gnome_sources="user/xdg-desktop-portal-gnome.service"
 _xdg_desktop_portal_kde_sources="user/plasma-xdg-desktop-portal-kde.service" # From https://invent.kde.org/plasma/xdg-desktop-portal-kde/-/blob/master/data/plasma-xdg-desktop-portal-kde.service.in
 _xdg_desktop_portal_wlr_sources="user/xdg-desktop-portal-wlr.service"
@@ -247,12 +279,15 @@ source="$(flatpath \
 	$_at_spi2_core_sources \
 	$_avahi_sources \
 	$_baloo_sources \
+	$_blueman_sources \
 	$_bluez_sources \
+	$_cellbroadcastd_sources \
 	$_colord_sources \
 	$_connman_sources \
 	$_containerd_sources \
 	$_cosmic_greeter_sources \
 	$_dconf_sources \
+	$_dnsmasq_sources \
 	$_docker_engine_sources \
 	$_eg25_manager_sources \
 	$_evolution_data_server_sources \
@@ -268,6 +303,7 @@ source="$(flatpath \
 	$_hexagonrpcd_sources \
 	$_hfd_service_sources \
 	$_hkdm_sources \
+	$_httpd_sources \
 	$_iio_sensor_proxy_sources \
 	$_iwd_sources \
 	$_kactivitymanagerd_sources \
@@ -300,18 +336,24 @@ source="$(flatpath \
 	$_rmtfs_sources \
 	$_rtkit_sources \
 	$_sensorfw_sources \
+	$_siglo_sources \
 	$_sleep_inhibitor_sources \
+	$_speakersafetyd_sources \
+	$_spectacle_sources \
 	$_syncthing_sources \
 	$_tailscale_sources \
 	$_tinydm_sources \
 	$_tinysparql_sources \
 	$_tqftpserv_sources \
+	$_transmission_daemon_sources \
 	$_tuned_sources \
 	$_tuned_ppd_sources \
 	$_udisks2_sources \
 	$_udiskie_sources \
 	$_usb_moded_sources \
 	$_vvmd_sources \
+	$_vnstat_sources \
+	$_watchdog_kick_sources \
 	$_waydroid_sensors_sources \
 	$_waydroid_sources \
 	$_wireguard_tools_wg_quick_sources \
@@ -347,16 +389,18 @@ _service() {
 		elif echo "user-environment-generators system-environment-generators" | grep -q "${f%%/*}"; then
 			prefix="$prefix/usr/lib/systemd"
 			mode=755
+		elif echo "user-generators system-generators" | grep -q "${f%%/*}"; then
+			prefix="$prefix/usr/lib/systemd"
+			mode=755
 		fi
 		install -Dm$mode "$srcdir/$(flatpath "$f")" "$prefix/$f"
 	done
 
 	# NOTE: we do not call default_systemd because it generates an incorrect
-	# install_if. Instead, call the relevant parts from default_systemd directly
+	# install_if.
 	# See: https://gitlab.postmarketos.org/postmarketOS/pmaports/-/merge_requests/6334#note_474497
 	depends="systemd"
 	pkgdesc="$pkgdesc (systemd files)"
-	default_systemd_install_scripts
 }
 
 package() {
@@ -371,11 +415,15 @@ sha512sums="
 37c2b24cf9d59c7f91b2556f7aac74d2dd2cbd7b1473432cc2eaeb1bc9b2c7cedc531e7b5b0facc3478840a516eb9cde8182714c3d5148169547554bf0810f84  system-avahi-daemon.service
 2f10490def55253edf164b26e17cf8d82fdcb19089c2dc2eac110c622c9661e0a3c4247629f924246b6c1a24faf0416bece4a6ab8729cd400ed5c3c1a7ed703b  system-avahi-daemon.socket
 c68f0c9f09f3e26a5d317792177057bbcfd83f7cd9c57b235325a836cf01c83abd4c0ab0088b2f3777d85497f35d25b1498ac5d29b717d3f5c0f0651ef1b6054  user-kde-baloo.service
+d579b380591dc39d2c52b3de14309bb35be6e13a4106615b6a9180389361938e49ff7a752ed6b49da304288771eab2a93d1626db16f395703151304e61ca4299  system-blueman-mechanism.service
+022827efa05c322a5a5af7617fdbc33db054ff08eb17e6349755f3355f81b6907c4132324344f2f9cb7205bbd3be2ffbfcde451edfdba2665574a697a1b9a93f  user-blueman-applet.service
+aef7b9060dec287f3d3e246255fb33fae3c8b2558dcc750b23d89d6ed66ca5db888b1bdb307a8d8a7c44e55a7398dea41aba23eab3d720ec93313f029b958377  user-blueman-manager.service
 de133c35cf95d7c833368c9010264668e72657400ad4e5259ef046321c878507f36ef73fa7b4759f69c9d18cda8f8db8d7675d794d9a28f46480fb4d47ba9e0c  system-bluetooth.service
 7972e37d950d8e337f109242dc3a7689d0d6e43b80ce42decd81f8d48abaf275a50f5d980d5a40d4494608a2f88f745e1d4639688e179c95792bfb6f398b9ae4  system-bluetooth-mesh.service
 5ad5f8adcc89759e5c935a2e55803fac52a9681af3a28f5c8d46f693717afcf7c8c6394f85dd5dbc1ddb575b909b0f6feee2e9973ee177e6445d375136b932ee  user-dbus-org.bluez.obex.service
 00049b418fab6dec7d9931a87cc64d2062efa0f7128bec1a693bfdf112703e628a2f1c98d2d5bf71554e6e576882890cef7a02de283909b1dd2f4c5ec0f6393e  user-mpris-proxy.service
 5ad5f8adcc89759e5c935a2e55803fac52a9681af3a28f5c8d46f693717afcf7c8c6394f85dd5dbc1ddb575b909b0f6feee2e9973ee177e6445d375136b932ee  user-obex.service
+67bfac5f7f3e75408c2bf52c0f9d8f7d1e9b1137e61844db99c8b8b855657934edc5963a0df199dd40ab6c03596402b3ca8145c0c29736f1c657f7b3748e6bc5  user-cellbroadcastd.service
 c10378bac1d64c0a2c767aab439c7d71bb7706b4fdc981add3ab4d5967257c0177f07448f884aeb1ee4571c59746c3584befa95858940aed198e29fa83cf5d17  system-colord.service
 52840a212a845900ed88bd08a7b318c2b74c68a421bf1a9bbb3378e09be2b6edab1ddb87a3e410925ab0f50ab738ab3c804611bdf8101ca7896e874f9f6ba066  system-connman-vpn.service
 a7fd0c47858a10c263d9bc661dc955366a2acd79f7be5cf2571dc7ec3b3f5adf122b4e55e58d01b778aa7ed0c6981fc454295c93d29bd89d9145d5d2439e01a5  system-connman-wait-online.service
@@ -384,6 +432,7 @@ b7cc164dc0520652df9b2bf6f9708b7230bc6a3274d02ce222ba507f94bf31e3125532cf806af7ca
 4c64d433da3999c4f778c379e67779b30370b3a06ee09f22eaa594ce68f948afe2d3827c254ddf4b53341b394718eb5e29d242d2db5209e87084502cb581cac8  system-cosmic-greeter.service
 0da725086569f336593f52de6e61fa34482522bd83cd477c3a8de610813c9a96278d94b59d84e2ce9fc3605f893a4e2708f2cf9452aae6c4cfe2ffca54c91e2c  system-cosmic-greeter-daemon.service
 e4de73d12abd046c8683e3be6e3aab40a5db3f5d6246cedbb3ff099bcc8037a167b23ac957d30f1118db571b69cb10c042272ac2b54dacf83fa6a3e9dad13a87  user-dconf.service
+97887423ad5b8344786912899553cd2f2033da6a79104a9ad59ebda813505ee05bef19c9e6f46af5ecee62dd0d436773a9a0d10bad759cd92aad3f53b95e62a2  sysusers.d-dnsmasq.conf
 1189ada8b126b2e574aea2e9b3ad9b0a86282d82be4f4ad4c58b1d968ce15ff45e8c60108f5e128ee946aa7e6e57f9fbb0b5d31d8371e79a2f0b3f3456bbd65f  system-docker.service
 c2d1f2a55bd7eed5a296e14b3250baa2f568dbdbce4444bae4635c1ce4bd6d3f1036462926d8c32d62d6609f5fcfb58933bf7eeb1924aefd814e864bc77bb7c7  system-docker.socket
 780912dbfdc7e9a350e934d46022b043edda86a393a7c107d0c855e9580240e4bce791428fdadef0a45adc6cfa24fb5d58981b6ccd80e3dad99da3e5fa3dc7b8  system-eg25-manager.service
@@ -409,9 +458,10 @@ e226bdb71f6fafe92d14046dfa19ddbccb765b579c1f90687a9ece376fa12406db9f2cf8035ff07d
 b31259eabac94a0709c274f37f8c0ce1752964d19e63306a04bc72cc426be3c40b3743bbf7e955cfbf5871295ea00c70d9f0ecd94a9fb4b7a422439cb7d4bd2a  system-hexagonrpcd-adsp-rootpd.service
 13547507622ad1e9505ef243e972b2bfaaf13e4ebe93801df2899828033be6683768cddb16de83a09aec3c09edc8d21c0cc6b5e127ad6168f70627e0e35f0146  system-hexagonrpcd-adsp-sensorspd.service
 ac6b7ac72f8caad95e73191a3839b9d8b125c9dd315fb3dbb9c386c132972684ea65ac33fcfb2a6e26ec49079d939a05a4d8059dba19b29dd2da230ee6726378  system-hexagonrpcd-sdsp.service
-af0e416f78ab317fe09813de58b446e5178457992ea4a2da2eb128811045201087d847e1b7ac0447a59c20129a736135e5d76b113262aa1f76b994e77b9c6b42  system-iio-sensor-proxy.service.d-hexagonrpcd.conf
+2e8a876b61093add48e0677dcbfdac148690eddb398ff51ab4edb6547515ad8f8cfec31e8fda6886746b3bf30410b7b63c7486dcfe2441a7e742ea5023981a45  system-iio-sensor-proxy.service.d-hexagonrpcd.conf
 5087ff36981b89c9bd09f96cff93d1f20d5af513e2cdebf65a85e329f458a9a2b77c12091ed31278c3b89baef79273cc818fddabbe4e1eec75faf7b9cc18cb8a  system-hfd-service.service
 083e59dcbbbd8f6ea148880256ff20f1a16e583348cd7cfc7aa6321d7b0cbe0a82780fd482a26ef25a5ebcfc83f5b7899d5db7c7d479fd7c56e5d7e95fd24a34  system-hkdm.service
+666ba094bff47aa67b4e4431929516af355f90ffc1fd60429dcd20b337c3c17d2d62a71c289496217282f0819bc8deba8db5cc5b2915b692defa14d19532a8d1  system-httpd.service
 d12ebe6e7db2a8e34baab640dd4e2ea9cd01bc19054adf32d55528a6b27f71c2006ac2d65a58c98e21ed598e9cc66bfe79e197d20ed9d13f866a5a6cd3e247d5  system-iio-sensor-proxy.service
 df3388cb7b9d035e54b34d8f8a6594be89c3015f979fe3bdc199fb7db1ab0bef821d6b306eecdf978eb227454d5e50aab29ac02d9722b1b075ec0ce4705e3518  system-iwd.service
 9cf877929b16f3437e65d1a0a2049799cc97cc84a7caab6a581e90139495b4febb5fb4c59ee463110866a0b60c9462d6d0fdb331d92d29b30ce6aeada365ac48  user-plasma-kactivitymanagerd.service
@@ -433,34 +483,42 @@ becb3bb17995f44b4021d05109130a00d0eba3d698eaf204a1f8d325741faa729d4ac7fedf0446b9
 a12d8d6994ae6e46b0d131c9f5c475ccc70ab7aaf5839b19c1917410fb3c90a208bc0c6e07c90cf251ea6e445741af83a9f77bf9fcb30490bb0fbfc07aa8cbb9  system-msm-modem-uim-selection.service
 f380d0a4760f0d19ea65b5fea7ca5e1eee28eb162fd15efec318bddb3ea1735f2c891d9d129227e959a2ac479b49f2c438170fe1fdd2c91abf564f7b111a97c3  system-msm-modem-wwan-port.service
 12bb9aa2a2ab8d4b21c72a785b41057eb16a27eca5718cd03a987a50b77d669fe90abafae48c68b41616f31b1953853b3b4a74db4bc3cdeccacc00df113de204  system-nftables.service
-cf85311596958ebbd0b9744e0323a69b06375d72d355274fda190d9465f5511344304112d542e13950e21c1cdb7664d3138dfa64895a5401e89e3ec3dcf118f7  system-nginx.service
+9cba2f9fc043d8cfb09ce7bcc6bef13194f6708bd0b82b2a360304a66a344d38b7f2641bdbeb0ce85ef9390e0f2ea34feef9d7d2c066ca8e0bd8d1f6108ce1e0  system-nginx.service
 fa445c4a53214524baed4e9c52a5463592a074f88a5a286eacb60d0907c0545f725afde23abd68cf611067add80c2ccb289a381fc5ff6a5f654ea49c81f02fe8  system-sshd.service
 6f1db26dbbcf96a5e14996cc468f1911c51a46fc3f70552af3591c0dfaaa043135d137d435818a2a2cce656f09fa305337c3c86121a5109dc20f0326a2e0ec15  system-sshd@.service
 c0badea3905c1d53d213fbfe11d25b556a2e484fe77eb50e9f4d42e25b67b56a0804e7d8e1b7731cd280cbb3525b4c60311817609381e2308d9f2dfb7c0d7072  system-sshdgenkeys.service
+4a6d716a907a730675505bfc4ac38598f9c4e7d962fa9cdeea51dbbaa6afec80d1b82b98627c37c164dc5cdcc7f68118104e3adb73d985f32a24f1941766c5af  sysusers.d-sshd.conf
 0bed9a8a719661609ad84d1c6fcdf2fe9213e741682b7ddebad82d9744f137c593788ed522868f10b95b599d81743d07ec3212630a7e99d333261dfa1bf1cc11  system-pd-mapper.service
 e12d8e98e28a795f879aebcceb32a991ee4abcb3bc5ec458aa5378bb52ff86cf39be04bc4a196925f532d623304b3005f561fa5e55d1c87944d718058ec4c0e6  system-plasma-mobile.service
 ebd194aad645a836ba2b51bfcebd7f78a8ec703e62dd7a7e85343df4f7b60e99abfebd6de12e540e4be24e9079aee0b8ea450e5169ce9ee97e44d0b370013a07  user-plasma-polkit-agent.service
 95a6acdc58b2ca13a92c62a36e455da9007443798c48a614a2154669de9a73e176b2f92124716f919f0088ba5b5bc4ae679138babf2c41f6e02c6a26af2da46a  system-power-profiles-daemon.service
 9f9392a2f9f72791c96179cf6e22e39e9c2f0e2dd3016e32143a68f871bd0ab506936f3372af0714330099888c877e7fe940102c862aa447d3e2758d9e00d046  user-plasma-powerdevil.service
-4c4c3f1e5e829ff67dd35df59120ab59730ff1f1ca0aab93f16d670132979a99099fad59e6c736908cc19df9172c9bdfe476ec721a1cc28de8c2210da46ce1f1  system-q6voiced.service
+169b0765a860303ca87ebe4e33bd8c7235ccf75d8061b13d7e7a27729a8555afb68e9e3b1be21636c725c6011b4f17123031ffa48f703875ba95f38eaca62afe  system-q6voiced.service
 621189aa251655796795f4fa0cd79360bb67573e7327e545064eaadafc83cc7b382a405d6ba80662e0a4ece3876e4270e3563d859a6ba63b5e3854b39c35873e  system-qbootctl.service
 998f70776a2857b44202079ecb1ec76331f998155c8a4a15ce036b2fb916d82cba5d750d66509e562f93482c2301a262e8efc220fe54ac2ee1a445801823e465  system-diag-router.service
-d937995f9f859b6c93e73b979d6e2c272c1c2835805ffcec6e0881283f01766ec976a59e13b92d8708536a88198e8fa8ca9248f4fc9f07f7709a5e283d24695c  system-rmtfs.service
+010cdc35517e3bc37c0ffd8666d3286ddc3a3b45d7a028995f93d735e27f4e06a517f30d0db8e776403ac1793d1bd8c8dd2bafc63908806925378b05034733db  system-rmtfs.service
 1a0958e4fe232967946e9f2b17a13434b137236ba5d18442175d648b084d82df3a9fc5723c1621be899ee290b99777ac3c0ee6ad733e72d8e70f63b37ad00036  system-rtkit-daemon.service
 d5bf5f01c0feafab4edfc39b75eded608dc3efcd3b918739e3ed2ab11340c9cc9b6fb97c0706ddd3d49b726c5f62e8cdb0048aefafd916f3ad9defc6ff9783bc  system-sensorfwd.service
+631a5647c93c103853cf27c69951f44f50b9d44a6ac7773258093b6b632ad466dd0275d9ce7d9b1018b083d3a582c80be011d80f6b9579e78b00113fe3e90951  user-siglo.service
 be9df5e3fd9c88ec1a8db4aa2d9e8075d74ee3d2670aa3cfc611df3cff4d4041ac888a0338c9d5f134bbc69aa32eb52ac40eb3e0981813afa18389cba14d3818  system-sleep-inhibitor.service
+7d829633bf7d281ebe9b4c2896f36a7196390aa5426820d3d74eb47889a12c4a776b0f4b0b38547fadb3639bc6903be4d7c013911bf9a98fee93cf0cb5718784  system-speakersafetyd.service
+0cfdb5bb5efad2ff0d730c68af4b16a0cf24985b864c6a5a9cedfdff130d403865dacfe1d9f5d37660a3898bd8681007d2fb5604a887cd7176836023adfe8c56  user-app-org.kde.spectacle.service
 399cd971b02e4b8bdfe60808ab1beac111b8618358f89a4482cafde1d19fe0a943d2ef6c20f5ad853581a85ab2297065187ade83eac7a664bd47412d0df7b2b6  user-syncthing.service
 41547eb369937348378e898e0dda7151552056107f4daab5a8a137a1b846560afa923cd345037b4f96bc9cdf2a7f66211a346b77229cc07ce2d0b634ff40dfe7  system-tailscaled.service
 de63ecafaffc675f21d2a4b1e6b7e2c5464c03f7b2f79094d7f719c295190ac28b3cd85ba99a17bb9042d77ec323a6ffb5f108e33d28b6e7820d09250daadd57  etc-default-tailscaled
 23f854fa2d0e0cb4de54db8605e549bb32061470ea7fa8ac16d474149be635e2b20a815c4ea8088e583693d7f515651ad2872b45f3b38a762f686b977d4fc49d  system-tinydm.service
+7a11c25c767de73a5c9fbf6d35c36da8200a5aa464c1a59880e443d60ea3ba3bb08ff3408ff2a087373bfe23b6ddcb6249aacd173c36d0a857dda5267954b47c  system-generators-tinydm-user-override
 7adde19af39f218b5daf81a356ed76c9311d48552d6aa5998535e34fc8e6217947e5b9722e7085b6f2969a9a64be467c0715ef11163c9ea1d437a2d04ef8288b  user-tinysparql-xdg-portal-3.service
 c569b27925297672c479e12a6425abdf5791886fff77c2c2b67b7aa9277eb0a22e7b95b52dbc225870c97460d0988a4dae18ed864e19096c704c0895de55b699  system-tqftpserv.service
+6b8346e94a078db1a81a77f7d3ea8cbd83e0f4f435806c3b36c3c16d06fa25d2b7774615acc82d1fb5e066fe5bc24c088038e2154f46812c2354d002871037ae  system-transmission-daemon.service
 a6154846b26445d4da8ef59364b8b43a2d64db7edc6726f094ff0f8688c832444a1e666c77a142bb66c11c226b45f29ad2000395bf69662fbbce9044c7dcadb0  system-tuned.service
 8d55230785dab9d37abc57b996af962333f493c516285f1b674788659915a5b83c7de48773da918ac7cbcc49b02c833c2e36d19e29b48911c96315b8927bcf45  system-tuned-ppd.service
 c7ea2b18c9d8f82306fbaca6d07b7019de3819d7898c3f50c3d0aceef4da4d311ed3bf31385e2f8998b8e3e326b1eb13309ffd44cf1b2d9db9b40bca00222c16  system-udisks2.service
 4c43a308e9e653914e534d92fc8caaf8c60cd21ae57bdbbf2fa591c1bd6a41e502268b6e0ff17b19cbe301fc7cfa1ad43070f13b372376fa3ddee9d11bf76f5a  user-udiskie.service
 be47b824125cc54d2e1c879f59421f3c549e3f42c92a53f7117968a861403edf60c9e3bf54fd54a69997ccb22dce6f891d993aec606070884e3ff6da2ac8a5b1  system-usb_moded.service
 6029a2cc1e7fbc00fea0b2abe9d4be6fa2a03cee4b7aceaecb2bbc94ddf1ed3127f1ce99a2e38c0e901261ed36aa3a616390da22364b40370b820023dc2b4a8e  user-vvmd.service
+b7cbb806669929182855dccc8cc6a606d829457dbe78320e13aaa2fcfbfbf0891fa624a499c4f1ba21d15dd8f712f7fb8797119b8bdfbfe55e2c21c673389d28  system-vnstat.service
+bef07aeb8d5d31d8f0d34e44e8db06f4a0aa1cb77245ca7e11e8775c935e3a3b3dcd923300192b0145c81e50bca76a97cfbee28e0af1e521ace794d26786eeaf  system-watchdog-kick.service
 841caa793d256cacea7eb651f3d77039b1c0ddb22727100d6cca74230e528aee09e945e1fdf20eaf40abbe3eaec9210eb7fa27144dc906cab65f8078b36921f9  system-waydroid-sensors.service
 023fc89481f9079ac2d2d6b8a9ab212cb13a6b309caaa92b336df4c6ee9cff05538f035f8411fd8f6b87ca73b400172f56022edbf02d3776ab6f2aa7af2eebef  system-waydroid-container.service
 edc1dd480dbeb14dc9dd164f7d75e3580d5b6ed14a1c033336ac024c18ae47ba54803ff3f2744e69f33cc072aa8c343e1a06c0ec5e269a1cc652ca1e9c117991  system-wg-quick@.service
@@ -469,6 +527,7 @@ ff5e1481d00d870b39fa8f11545b1a3bff7ac0278440d329f600d4493de8628c120b95268494e6b8
 eb01dd32fc598e49cbae31847aee4c3e28ee5014df052d65ad02c9a943a9e3399a4a119aa136630efef1157e31f6adc2d8420f8e72dc9da4c0b72645e4c84faa  user-xdg-desktop-portal-gtk.service
 8b7992b88fbccd4be77b7b8094349a27bde66a19585b97c40c441858a70d033b1a8fa146dd85bef5a08eed0ab08bd868ec9512ca72dbaea29ffa7038cf915605  user-plasma-xdg-desktop-portal-kde.service
 59da92e930a3bfff65d7373a8b30d060757560bc0a97633c1779038a9516c1efd3fe2e9537381e5e9380cde9b4a5539788a497d231e403dd822c8a3c019d01ce  user-xdg-desktop-portal-phosh.service
+179369df47a62b8781abe410e0d6c53b280033675fc110780fe832d43f6fe2c9475996f1adb8bc19492eea26252957e73bdbb45b3bc9a5cf4fb7fd5c43d2ce76  user-xdg-desktop-portal-phrosh.service
 9a3620d3df53540a91efa48df322288d96ec887415f538877a979be40eb5239b95917b9ac57fda2c699fe3f1c6500f7de09a4ce6625b0818f5786e125713552f  user-xdg-desktop-portal.service
 e09a3c76f3be961dce9f564bb654ea84d1d7fb59907a2168c0569bf6c17a5ebe9fbe4d1f94f1d014433757bb721bc443d5962deb540cacbd5547b1dd47717f92  user-xdg-desktop-portal-rewrite-launchers.service
 9dd95f10dcdb6234697b012c6f428cfca0cfbde24a8951e96cb4c463f55a22d40096a94ca0018f9dbe4ebb2c80eb39faeaa9222f6fb419831520a138f88f0321  user-xdg-document-portal.service
