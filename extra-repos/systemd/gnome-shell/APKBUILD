@@ -1,13 +1,14 @@
 # Forked from Alpine to add systemd!
 
 pkgname=gnome-shell
-pkgver=99948.3
-_pkgver=48.3
+pkgver=99949.0
+_pkgver=49.0
 pkgrel=0
 pkgdesc="GNOME shell"
 url="https://gitlab.gnome.org/GNOME/gnome-shell"
 # gjs -> mozjs
-arch="all !armhf !s390x"
+# TODO: Alpine riscv64 is still building, enable me once community is uploaded
+arch="all !armhf !s390x !riscv64"
 license="GPL-2.0-or-later"
 depends="
 	accountsservice
@@ -73,6 +74,7 @@ subpackages="
 	"
 source="https://download.gnome.org/sources/gnome-shell/${_pkgver%.*}/gnome-shell-$_pkgver.tar.xz
 	gsh.patch
+	revert-gnome-session-49.patch
 	"
 # TODO: crossdirect disabled due to armv7 crosscompile failure on x86_64, see
 # https://gitlab.com/postmarketOS/pmaports/-/merge_requests/5115#note_1899890119
@@ -121,6 +123,7 @@ schemas() {
 }
 
 sha512sums="
-41bf31a02dba5d77450c5e0b9bec80e9baff97a56529411d2efedbf9b8810dfa6c5900f1d56a8a0d1d92d705a9dcd3d18fba8fc699ca9d94c1a0944a51b692cd  gnome-shell-48.3.tar.xz
+9af3057ba19796839c7d02e7ee891b6991285504dce98ccf332bf0bf31893b37b3dca0232b7d8f0a70554f54bd6773846448b329e7f03bdf265be06b979407d0  gnome-shell-49.0.tar.xz
 ae4ac679bacd35948b44068e5a70407f473bd96986ee126abb1bdf066db5cbc2087a3ffae0b390286689cacbe8325870fd43663ba39f4f7543216e02bf083934  gsh.patch
+9fc784ef42f3b64f242be05fefc5014f88c20292b433c04fb20acb4f2d481d6421eb1836652ec38dc358945d950abf8b36b4efd30b281efc32ff26331341bd21  revert-gnome-session-49.patch
 "

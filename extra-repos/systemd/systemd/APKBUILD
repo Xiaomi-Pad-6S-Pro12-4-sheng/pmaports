@@ -7,9 +7,9 @@
 #########################################################
 
 pkgname=systemd
-pkgver=257.7
+pkgver=257.8
 _pkgver="musl-v${pkgver//_/-}-split-usr"
-pkgrel=3
+pkgrel=1
 pkgdesc="System and service manager"
 url="https://github.com/systemd/systemd"
 # ppc64le and s390x blocked by pmboostrap not supporting
@@ -42,6 +42,7 @@ makedepends="
 	cmake
 	coreutils
 	cryptsetup-dev
+	curl-dev
 	elfutils
 	glib-dev
 	gperf
@@ -130,7 +131,6 @@ subpackages="
 source="
 	https://gitlab.postmarketos.org/postmarketOS/systemd/-/archive/$_pkgver/systemd-$_pkgver.tar.gz
 	wired.network
-	systemd-apk-macros.sh
 	"
 builddir="$srcdir/systemd-$_pkgver"
 
@@ -158,19 +158,39 @@ _default_zshcomp() {
 }
 
 build() {
+	# The "bless boot" is built conditionally on -Dbootloader=enabled, but it
+	# doesn't seem to actually depend on anything in src/systemd/boot. There's a lot
+	# of stuff that gets enabled with that flag, and we don't actually want any of
+	# it (it's packaged separately as 'systemd-boot' in Alpine aports). By removing
+	# the condition, we can build/package the bless boot stuff without having to
+	# unnecessarily build the bootloader.
+	sed -i "/'ENABLE_BOOTLOADER',/d" src/bless-boot/meson.build
+	sed -i "/systemd-bless-boot.service.in/,/},/ s/'ENABLE_BOOTLOADER', //" units/meson.build
+
+	# TODO: after usr-merge completion: remove hardcoded "-D*-path" options
 	abuild-meson \
 		-Dmode=release \
 		-Dsplit-bin=true \
 		-Dsplit-usr=true \
 		\
+		-Dquotaon-path=/usr/sbin/quotaon \
+		-Dquotacheck-path=/usr/sbin/quotacheck \
 		-Dkmod-path=/bin/kmod \
+		-Dkexec-path=/usr/sbin/kexec \
 		-Dsulogin-path=/sbin/sulogin \
+		-Dmount-path=/bin/mount \
+		-Dumount-path=/bin/umount \
+		-Dloadkeys-path=/usr/bin/loadkeys \
+		-Dsetfont-path=/usr/bin/setfont \
+		-Dnologin-path=/sbin/nologin \
 		\
 		-Ddebug-shell=/bin/ash \
 		-Dpolkit=enabled \
 		-Dpam=enabled \
 		-Dpamlibdir=/usr/lib/security \
 		-Dpamconfdir=/usr/lib/pam.d \
+		-Dsysupdated=enabled \
+		-Dimportd=enabled \
 		\
 		-Dbootloader=disabled \
 		-Dutmp=false \
@@ -181,11 +201,9 @@ build() {
 		-Dnss-mymachines=disabled \
 		-Dnss-resolve=disabled \
 		-Dnss-systemd=false \
-		-Dsysext=true \
-		-Dsysusers=true \
 		-Dselinux=disabled \
 		\
-		-Dman=enabled\
+		-Dman=enabled \
 		-Dhtml=disabled \
 		\
 		-Dsystem-alloc-uid-min=101 \
@@ -197,16 +215,17 @@ build() {
 		-Dnobody-group=nobody \
 		\
 		-Ddefault-kill-user-processes=true \
-		-Dgshadow=false \
 		-Ddefault-locale=en_US.UTF-8 \
+		\
+		-Dgshadow=false \
+		-Didn=false \
+		-Dsysvinit-path="" \
 		\
 		-Ddefault-dns-over-tls=yes \
 		-Ddns-over-tls=openssl \
 		-Ddns-servers="9.9.9.10#dns10.quad9.net 149.112.112.10#dns10.quad9.net 2620:fe::10#dns10.quad9.net 2620:fe::fe:10#dns10.quad9.net" \
 		-Dntp-servers="0.pool.ntp.org 1.pool.ntp.org 2.pool.ntp.org 4.pool.ntp.org" \
 		\
-		-Didn=false \
-		-Dsysvinit-path="" \
 		-Dbpf-framework=enabled \
 		-Dvmlinux-h=provided \
 		-Dvmlinux-h-path="$(find /usr/src -path "/usr/src/linux-headers-*-stable/vmlinux.h" | sort -V | tail -n1)" \
@@ -234,10 +253,6 @@ package() {
 		mkdir -p "$pkgdir"/usr/lib/systemd/"$type"-preset
 		echo 'disable *' > "$pkgdir"/usr/lib/systemd/"$type"-preset/99-default.preset
 	done
-
-	install -Dm755 "$srcdir"/systemd-apk-macros.sh -t \
-		"$pkgdir"/usr/lib/systemd
-
 
 	# initramfs hardcodes /sbin/init
 	mkdir -p "$pkgdir"/sbin
@@ -290,9 +305,6 @@ timesyncd() {
 	amove usr/share/dbus-1/system-services/org.freedesktop.timesync1.service
 	amove usr/share/dbus-1/system.d/org.freedesktop.timesync1.conf
 	amove usr/share/polkit-1/actions/org.freedesktop.timesync1.policy
-
-	# Generate install scripts automatically for services in this subpackage
-	default_systemd_install_scripts
 }
 
 timesyncd_bcomp() {
@@ -326,9 +338,6 @@ networkd() {
 	amove usr/share/polkit-1/actions/org.freedesktop.network1.policy
 
 	install -D -m0644 "$srcdir/wired.network" "$subpkgdir/usr/lib/systemd/network/80-wired.network"
-
-	# Generate install scripts automatically for services in this subpackage
-	default_systemd_install_scripts
 }
 
 networkd_bcomp() {
@@ -356,9 +365,6 @@ resolved() {
 	amove usr/share/dbus-1/system-services/org.freedesktop.resolve1.service
 	amove usr/share/dbus-1/system.d/org.freedesktop.resolve1.conf
 	amove usr/share/polkit-1/actions/org.freedesktop.resolve1.policy
-
-	# Generate install scripts automatically for services in this subpackage
-	default_systemd_install_scripts
 }
 
 resolved_bcomp() {
@@ -445,7 +451,6 @@ libs() {
 }
 
 sha512sums="
-e4a122814efed6d7809db33ed78ac8e0bc685f999d76643a0c8f60ac1527c9df10720b202bf6b62ee3b9334cbee5d17a5ff95f8781a9e4f1485705b8020a5c25  systemd-musl-v257.7-split-usr.tar.gz
+f074fef94f937707ff56a90f63201a29ebb5348b68b813e9dc6585316313b9aabb92e6b7ea1e7f38411286c616477f7a4e998a8d5b611b51d5e06ecca6d35d6c  systemd-musl-v257.8-split-usr.tar.gz
 81c897fed8a3fbfb67ec591b2398a5d65e4af1b3ef379376c157c98d71f085b707f8ebc896d5571a94f99f8fc84fd6b43e3b879ca9b0d57fc6c4596034c7a777  wired.network
-cc1c8f00a0ff1c94fcebe0e6d48b3d1a74c51b9d86bf255762cecda4b4d0c08e313f817aaaa301f41133eaf73c525e36c0f48659b263a7ed990080de9f3cec6c  systemd-apk-macros.sh
 "

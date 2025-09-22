@@ -4,7 +4,7 @@
 pkgname=device-google-nyan-blaze
 pkgdesc="HP Chromebook 14 G3"
 pkgver=6
-pkgrel=1
+pkgrel=3
 url="https://postmarketos.org"
 license="MIT"
 arch="armv7"
@@ -42,7 +42,7 @@ package() {
 
 	# Block nouveau as it is in very bad condition
 	install -Dm644 "$srcdir"/gpu.conf \
-		"$pkgdir"/etc/modprobe.d/gpu.conf
+		"$pkgdir"/usr/lib/modprobe.d/gpu.conf
 }
 
 nonfree_firmware() {
@@ -70,7 +70,7 @@ mpv_xorg() {
 sway() {
 	install_if="$pkgname=$pkgver-r$pkgrel postmarketos-ui-sway"
 	install -Dm755 "$srcdir"/10-no-hardware-cursor.sh \
-		"$subpkgdir"/etc/tinydm.d/env-wayland.d/10-no-hardware-cursor.sh
+		"$subpkgdir"/usr/share/tinydm/env-wayland.d/10-no-hardware-cursor.sh
 }
 
 sha512sums="
