@@ -30,10 +30,10 @@ makedepends="
 # Source
 _tag="sm8550-$pkgver"
 source="
-	sheng-6.15-upd.tar.gz::https://github.com/alghiffaryfa19/sm8550-mainline/archive/refs/heads/sheng-6.15-upd.tar.gz
+	sheng-6.16.tar.gz::https://github.com/alghiffaryfa19/sm8550-mainline/archive/refs/heads/sheng-6.16.tar.gz
 	config-postmarketos-qcom-sm8550.aarch64
 "
-builddir="$srcdir/sm8550-mainline-sheng-6.15-upd"
+builddir="$srcdir/sm8550-mainline-sheng-6.16"
 
 prepare() {
 	default_prepare
