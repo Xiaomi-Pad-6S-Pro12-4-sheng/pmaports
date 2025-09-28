@@ -17,12 +17,11 @@ depends="
 	firmware-xiaomi-sheng
 	linux-postmarketos-qcom-sm8550
 	make-dynpart-mappings
-	mesa-vulkan-freedreno
 	mkbootimg
 	msm-modem
 	postmarketos-base
-	qbootctl
-	swclock-offset
+	soc-qcom
+	soc-qcom-qbootctl
 "
 makedepends="devicepkg-dev"
 source="
