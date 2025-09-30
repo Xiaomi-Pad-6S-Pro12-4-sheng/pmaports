@@ -7,7 +7,6 @@
 import configparser
 import os
 import subprocess
-import sys
 
 
 cache = {}
@@ -31,13 +30,6 @@ def run_git(parameters, check=True, stderr=None):
         if check:
             raise
         return None
-
-
-def add_upstream_git_remote():
-    """ Add a remote pointing to postmarketOS/pmaports. """
-    run_git(["remote", "add", "upstream",
-             "https://gitlab.postmarketos.org/postmarketOS/pmaports.git"], False)
-    run_git(["fetch", "-q", "upstream"])
 
 
 def commit_message_has_string(needle):
@@ -98,6 +90,15 @@ def get_upstream_branch():
 def get_base_commit() -> str:
     """Get the base commit that can be compared with HEAD to get all commits in the
     given branch/merge request."""
+
+    commit = os.getenv("CI_MERGE_REQUEST_DIFF_BASE_SHA")
+    if commit is not None:
+        return commit
+
+    # Add a remote pointing to postmarketOS/pmaports
+    run_git(["remote", "add", "upstream",
+             "https://gitlab.postmarketos.org/postmarketOS/pmaports.git"], False)
+    run_git(["fetch", "-q", "upstream"])
 
     branch_upstream = f"upstream/{get_upstream_branch()}"
     commit_head = run_git(["rev-parse", "HEAD"])[:-1]
@@ -181,5 +182,12 @@ def get_changed_kernels():
     ret = []
     for pkgname in get_changed_packages():
         if pkgname.startswith("linux-"):
+            ret += [pkgname]
+    return ret
+
+def get_changed_devices():
+    ret = []
+    for pkgname in get_changed_packages():
+        if pkgname.startswith("device-"):
             ret += [pkgname]
     return ret
