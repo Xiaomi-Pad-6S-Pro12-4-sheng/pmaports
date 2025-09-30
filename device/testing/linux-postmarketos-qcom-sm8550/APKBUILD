@@ -28,12 +28,12 @@ makedepends="
 "
 
 # Source
-_tag="sm8550-$pkgver"
+_commit="5b3a834f4e9c4df8efaacf8b5d1ff650ebc044ec"
 source="
-	sheng-6.17.tar.gz::https://github.com/map220v/sm8550-mainline/archive/refs/heads/sheng-6.17.tar.gz
+	$pkgname-$_commit.tar.gz::https://github.com/map220v/sm8550-mainline/archive/$_commit.tar.gz
 	config-postmarketos-qcom-sm8550.aarch64
 "
-builddir="$srcdir/sm8550-mainline-sheng-6.17"
+builddir="$srcdir/sm8550-mainline-$_commit"
 
 prepare() {
 	default_prepare
