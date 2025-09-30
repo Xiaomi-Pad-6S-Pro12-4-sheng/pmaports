@@ -2,7 +2,7 @@
 # Maintainer: Fauzan Amir <alghiffaryfa19@gmail.com>
 pkgname=device-xiaomi-sheng
 pkgdesc="Xiaomi Pad 6s Pro"
-pkgver=6
+pkgver=1
 pkgrel=0
 url="https://postmarketos.org"
 license="MIT"
@@ -18,7 +18,7 @@ depends="
 	linux-postmarketos-qcom-sm8550
 	make-dynpart-mappings
 	mkbootimg
-	msm-modem
+	soc-qcom-modem
 	postmarketos-base
 	soc-qcom
 	soc-qcom-qbootctl
@@ -51,10 +51,6 @@ package() {
 	mkdir -p "$pkgdir/usr/share/alsa/ucm2/conf.d/sm8550"
 	ln -s ../../Xiaomi/sheng/Xiaomi-Pad6SPro.conf \
 		"$pkgdir/usr/share/alsa/ucm2/conf.d/sm8550/Xiaomi-Pad6SPro.conf"
-
-	# install -Dm64 "$srcdir"/30-gpu-firmware.files -t \
-	# 	"$pkgdir"/usr/share/mkinitfs/files
-
 }
 
 openrc() {
