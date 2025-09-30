@@ -1,0 +1,16 @@
+site:
+  title: Device ports
+  start_page: pmaports::index.adoc
+
+content:
+  sources:
+  - url: .
+    start_path: docs
+    branches: HEAD
+  - url: https://gitlab.postmarketos.org/postmarketOS/handbook
+    branches: HEAD
+
+ui:
+  bundle:
+    url: ./handbook/ui-bundle
+    snapshot: true

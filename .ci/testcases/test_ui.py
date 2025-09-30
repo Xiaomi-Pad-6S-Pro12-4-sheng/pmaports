@@ -2,14 +2,10 @@
 # Copyright 2021 Oliver Smith
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-import glob
-import pytest
-import sys
-import os
+from pathlib import Path
 
-import add_pmbootstrap_to_import_path
+import common
 import pmb.parse
-from pmb.core.pkgrepo import pkgrepo_iglob
 
 
 def test_aports_ui():
@@ -17,9 +13,15 @@ def test_aports_ui():
     Raise an error if package in _pmb_recommends is not found
     """
     pmaports_cfg = pmb.config.pmaports.read_config()
-
     for arch in pmaports_cfg["supported_arches"].split(","):
-        for path in pkgrepo_iglob("main/postmarketos-ui-*/APKBUILD"):
+        for path in common.get_changed_files():
+            path = Path(path)
+
+            if path.name != "APKBUILD":
+                continue
+            if not path.parent.name.startswith("postmarketos-ui"):
+                continue
+
             apkbuild = pmb.parse.apkbuild(path)
             # Skip if arch isn't enabled
             if not pmb.helpers.package.check_arch(apkbuild["pkgname"], arch, False):

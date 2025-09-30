@@ -1,0 +1,33 @@
+maintainer="Ingo Reitz <9l@9lo.re>"
+pkgname=device-google-oriole
+pkgdesc="Google Pixel 6"
+pkgver=2
+pkgrel=0
+url="https://postmarketos.org"
+license="MIT"
+arch="aarch64"
+options="!check !archcheck"
+depends="
+	android-tools
+	linux-postmarketos-gs101
+	postmarketos-base
+	soc-google-gs101
+"
+makedepends="devicepkg-dev"
+source="
+	deviceinfo
+	modules-initfs
+"
+
+build() {
+	devicepkg_build $startdir $pkgname
+}
+
+package() {
+	devicepkg_package $startdir $pkgname
+}
+
+sha512sums="
+f5bdbe58a42d0af97a0cf6704266e2987bb6939a218b62bf3d8cd3582264d1d8578a14a1f551cf4b16db6f9244ad021615821d20e5a7b455c3d357377a3d6e6b  deviceinfo
+a5171dc7a4221a5a63c02820bac1e372c557cee72db9f777099f67eb272595fad6019f876cb47dd1bf455eeb3a45a74f215f2e8c44a6e1bf7cf3d7d9f49d98ad  modules-initfs
+"
