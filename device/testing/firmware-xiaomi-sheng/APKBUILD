@@ -7,15 +7,17 @@ url="https://github.com/map220v/sheng-firmware"
 arch="aarch64"
 license="proprietary"
 options="!check !strip !archcheck !tracedeps pmb:cross-native"
+_commit="92c49abb2da9f325e8385ca6f0ad1fb39608af7b"
 source="
-	https://github.com/alghiffaryfa19/sheng-firmware/archive/refs/heads/master.tar.gz
+	$pkgname-$_commit.tar.gz::https://github.com/map220v/sheng-firmware/archive/$_commit.tar.gz
+	30-gpu-firmware.files
 "
 depends="
 	linux-firmware-ath12k
 	linux-firmware-qcom
 	linux-firmware-qca
 	"
-builddir="$srcdir/sheng-firmware-master"
+builddir="$srcdir/sheng-firmware-$_commit"
 
 package() {
 	# parent package is empty
@@ -45,8 +47,7 @@ package() {
 
 	install -Dm644 "$builddir"/qcom/sm8550/sheng/* -t \
 		"$pkgdir"/lib/firmware/qcom/sm8550/sheng/
-}
 
-sha512sums="
-  56092f8c1ceeac0d7ad33da387da612e661342ccc3ae5e84f666267f179f66f00ae1e20f166cc33e904ffbf18de0128349d14edf6fe2bc617bac7c8c8fc72ec2  master.tar.gz
-"
+	install -Dm644 "$srcdir"/30-gpu-firmware.files \
+		"$subpkgdir"/usr/share/mkinitfs/files/30-gpu-firmware.files
+}
