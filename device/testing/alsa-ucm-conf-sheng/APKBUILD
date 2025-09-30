@@ -3,20 +3,20 @@ pkgname=alsa-ucm-conf-sheng
 pkgver=1
 pkgrel=1
 pkgdesc="ALSA UCM configuration for Sheng"
-url="https://postmarketos.org"
+url="https://github.com/map220v/alsa-ucm-conf"
 arch="aarch64"
 license="BSD-3-Clause"
 provides="alsa-ucm-conf"
 provider_priority=1
-_commit="master"
+_commit="sm8550"
 options="!check"
 source="
-alsa-ucm-conf-sm8550.zip
+alsa-ucm-conf-$_commit.tar.gz::$url/archive/$_commit.tar.gz
 "
 
 package() {
 	# install audio config files
 	mkdir -p "$pkgdir"/usr/share/alsa
-	cp -r "$srcdir"/alsa-ucm-conf-sm8550/ucm2 \
+	cp -r "$srcdir"/alsa-ucm-conf-$_commit/ucm2 \
 		"$pkgdir"/usr/share/alsa/
 }
