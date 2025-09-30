@@ -26,7 +26,6 @@ depends="
 makedepends="devicepkg-dev"
 source="
 	deviceinfo
-	30-gpu-firmware.files
 	HiFi.conf
 	Xiaomi-Pad6SPro.conf
 	XiaomiPad6SPro.conf
@@ -53,8 +52,8 @@ package() {
 	ln -s ../../Xiaomi/sheng/Xiaomi-Pad6SPro.conf \
 		"$pkgdir/usr/share/alsa/ucm2/conf.d/sm8550/Xiaomi-Pad6SPro.conf"
 
-	install -Dm64 "$srcdir"/30-gpu-firmware.files -t \
-		"$pkgdir"/usr/share/mkinitfs/files
+	# install -Dm64 "$srcdir"/30-gpu-firmware.files -t \
+	# 	"$pkgdir"/usr/share/mkinitfs/files
 
 }
 
