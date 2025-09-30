@@ -4,7 +4,7 @@
 
 _flavor="postmarketos-qcom-sm8550"
 pkgname=linux-$_flavor
-pkgver=6.16.0
+pkgver=6.17.0
 pkgrel=1
 pkgdesc="Mainline kernel fork for SM8550"
 arch="aarch64"
@@ -30,10 +30,10 @@ makedepends="
 # Source
 _tag="sm8550-$pkgver"
 source="
-	sheng-6.16.tar.gz::https://github.com/map220v/sm8550-mainline/archive/refs/heads/sheng-6.16.tar.gz
+	sheng-6.17.tar.gz::https://github.com/map220v/sm8550-mainline/archive/refs/heads/sheng-6.17.tar.gz
 	config-postmarketos-qcom-sm8550.aarch64
 "
-builddir="$srcdir/sm8550-mainline-sheng-6.16"
+builddir="$srcdir/sm8550-mainline-sheng-6.17"
 
 prepare() {
 	default_prepare
